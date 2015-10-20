@@ -34,24 +34,32 @@ We have created a small PHP library that handles the authentication with the API
 The API library consists of a single PHP class that can be included on pages that need access to the API. The library
 can be loaded using a single require statement:
 
-    require_once('<path to library>/Its123Handler.php');
+```php
+require_once('<path to library>/Its123Handler.php');
+```
 
 Using your API key and username, we can now create an instance of the handler:
 
-    $handler = new Its123Handler('<username>', '<api key>');
+```php
+$handler = new Its123Handler('<username>', '<api key>');
+```
 
 Here, replace `<username>` with your username and `<api key>` with the api key associated to your account.
 
 Optionally you can set the handler to debug mode to get more feedback in case of errors. *Note:* Do not use this in a production environment!
 
-    //Handler with debug mode enabled
-    $handler = new Its123Handler('<username>', '<api key>', true);
+```php
+//Handler with debug mode enabled
+$handler = new Its123Handler('<username>', '<api key>', true);
+```
 
 ## Retrieving session & access codes
 
 Now the handler is loaded we can retrieve access codes for products. For this we need the unique product id.
 
-    $handlerData = $handler->requestAccess('<product id>');
+```php
+$handlerData = $handler->requestAccess('<product id>');
+```
 
 Here replace `<product id>` with the key of the product you wish to retrieve (see your credentials page for an overview of ids). By running the function
 an encrypted request is done to the API to retrieve an access code for the product that is specified. These API requests are
@@ -71,27 +79,31 @@ After the access code is generated we are ready to retrieve the actual test. Thi
 
 Start with including the API Javascript library on your page:
 
-    <script src="//api.123test.com/its123api-js.js?v=1&callback=its123Initialize&reportFinished=its123ReportFinishedAjax"></script>
+```html
+<script src="//api.123test.com/its123api-js.js?v=1&callback=its123Initialize&reportFinished=its123ReportFinishedAjax"></script>
+```
 
 Note that the url contains two callback functions: `its123Initialize` for initialization and `its123ReportFinishedAjax` to run when the test is completed. These functions can be named differently, just make sure that you use the same names in the following steps.
 
 First we define the initialization function:
 
-    <script type="application/javascript">
-        function its123Initialize()
-        {
-            var productOptions = {
-                //The session code retrieved from the handler
-                publicApiKey: '<?php echo $handlerData->session; ?>',
-                //The id of the div tag where to apply the 123test product
-                divIDProduct: '<id of html element>',
-                //Class name of the div that contains the loading tag
-                divClassLoadingComponent: '<class of loading element>',
-            };
+```html
+<script type="application/javascript">
+    function its123Initialize()
+    {
+        var productOptions = {
+            //The session code retrieved from the handler
+            publicApiKey: '<?php echo $handlerData->session; ?>',
+            //The id of the div tag where to apply the 123test product
+            divIDProduct: '<id of html element>',
+            //Class name of the div that contains the loading tag
+            divClassLoadingComponent: '<class of loading element>',
+        };
 
-            its123.api.loadInstrument(productOptions, null);
-        }
-    </script>
+        its123.api.loadInstrument(productOptions, null);
+    }
+</script>
+```
 
 The main goal of this function is to define the configuration that is used by the Javascript library and to define the access code that is used for this request. The `publicApiKey` should be set to the session code you retrieved using the handler.
 **Note:** Do *not* place your API key here, that should remain private.
@@ -102,19 +114,21 @@ The two other variables, `divIDProduct` and `divClassLoadingComponent`, are used
 
 The second callback that the Javascript library uses defines the behaviour that is executed when the report is ready to be shown to the user; this is after all parts of the test have been completed. The function requests the report from the API and displays it to the user.
 
-    <script type="application/javascript">
-        function its123ReportFinishedAjax()
-        {
-            var productOptions = {
-                //The id of the div tag where to apply the 123test product
-                divReportID: '<id of html element>',
-                //Class name of the div that contains the loading tag
-                divClassLoadingComponent: '<class of loading element>'
+```html
+<script type="application/javascript">
+    function its123ReportFinishedAjax()
+    {
+        var productOptions = {
+            //The id of the div tag where to apply the 123test product
+            divReportID: '<id of html element>',
+            //Class name of the div that contains the loading tag
+            divClassLoadingComponent: '<class of loading element>'
 
-            };
+        };
 
-            its123.api.loadReport("standard", "<?php echo $handlerData->accessCode; ?>"  ,productOptions);
-        }
-    </script>
+        its123.api.loadReport("standard", "<?php echo $handlerData->accessCode; ?>"  ,productOptions);
+    }
+</script>
+```
 
 Set `divIDReport` to the ID of the element where you want the report to show. `divClassLoadingComponent` can be used to show a loading message to users. Elements with this class are automatically shown and hidden when the API is loading.
