@@ -16,7 +16,7 @@ This SDK includes a getting started guide and code examples for each platform th
 
 ## Questions and feature requests
 
-Please use the [issue tracker](/issues) for general questions or feature requests regarding this SDK. For general information about 123test, accessing the API or other questions please use the [contact form](https://www.123test.com/contact/).
+Please use the [issue tracker](https://github.com/123test/api-sdk/issues) for general questions or feature requests regarding this SDK. For general information about 123test, accessing the API or other questions please use the [contact form](https://www.123test.com/contact/).
 
 ## Requesting access
 
