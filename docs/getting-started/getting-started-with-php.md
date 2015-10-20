@@ -35,13 +35,13 @@ The API library consists of a single PHP class that can be included on pages tha
 can be loaded using a single require statement:
 
 ```php
-require_once('<path to library>/Its123Handler.php');
+require_once('<path to library>/Its123/Sdk/ApiHandler.php');
 ```
 
 Using your API key and username, we can now create an instance of the handler:
 
 ```php
-$handler = new Its123Handler('<username>', '<api key>');
+$handler = new Its123\Sdk\ApiHandler('<username>', '<api key>');
 ```
 
 Here, replace `<username>` with your username and `<api key>` with the api key associated to your account.
@@ -50,7 +50,7 @@ Optionally you can set the handler to debug mode to get more feedback in case of
 
 ```php
 //Handler with debug mode enabled
-$handler = new Its123Handler('<username>', '<api key>', true);
+$handler = new Its123\Sdk\ApiHandler('<username>', '<api key>', true);
 ```
 
 ## Retrieving session & access codes
