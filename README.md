@@ -3,3 +3,7 @@
 # API-SDK for 123test
 
 API documentation and code examples to access the 123test API
+
+# Getting started
+- [Example code PHP](docs/getting-started/getting-started-with-php.md)
+
