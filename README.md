@@ -4,10 +4,10 @@
 
 API documentation and code examples to integrate tests of 123test into your own products and websites.
 
-# Getting started
+## Getting started
 - [Example code PHP](docs/getting-started/getting-started-with-php.md)
 
-# Copyright
+## Copyright
 
 The SDK documentation and code examples are licensed under the MIT License.
 
