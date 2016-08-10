@@ -1,6 +1,6 @@
 # Setting up
 
-123test offers a ready to use Javascript library to access the API. The library manages
+123test offers a ready-to-use Javascript library to access the API. The library manages
 everything from requesting products, displaying instruments and showing reports.
 
 The library comes in two forms:
