@@ -23,7 +23,7 @@ The code below is the minimal approach to loading a Jung test including report:
     <!-- HTML reports are rendered in this div, keep empty -->
 </div>
 
-<script type="text/javascript" id="its123-jPs">
+<script type="text/javascript" id="its123-js">
   window.loadIts123Api=function(a,b){var c="undefined"!=typeof Promise&&Promise.toString().indexOf("[native code]")!==-1&&window.fetch,d=function(a,b){var c=document.createElement("script");c.type="text/javascript",c.src=a,c.onload=b;var d=document.getElementsByTagName("script")[0];d.parentNode.insertBefore(c,d)};c?d(a+"/its123api.min.js",b):d(a+"/its123api.polyfill.min.js",b)};
 
   loadIts123Api('https://api.123test.com', function () {
