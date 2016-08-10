@@ -1,4 +1,4 @@
-> Make sure to read the [Setting Up](loading-product.md) and [HTML structure](html-structure.md) guide first before you follow the guide below.
+> Make sure to read the [Setting Up](loading-product.md) and [HTML structure](html-structure.md) guide first before follwing the guide below.
 
 # Loading a product
 
@@ -59,17 +59,19 @@ api.loadProduct('jung-en_us-1', false).then(function(product) {
 
 ### Example: Manually showing a report
 
+All API requests are performed using Promises and can therefore be chained and altered:
+
 ```js
 ...
 
-api.loadProduct('jung-en_us-1', false).then(function(product) {
+api.loadProduct('jung-en_us-1', false)
+  .then(function(product) {
+    // Get the access code for a specific report
+    var report = product.reports[0].access_code;
 
-  // Get the access code for a specific report
-  var report = product.reports[0].access_code;
-
-  return api.requestReport(report))
-    .then(function(body) {
+    return api.requestReport(report);
+  })
+  .then(function(body) {
       // Do something with report body
-    });
-});
+  });
 ```
