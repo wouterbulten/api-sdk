@@ -5,10 +5,10 @@ everything from requesting products, displaying instruments and showing reports.
 
 The library comes in two forms:
 
-- A **lightweight version** that can be used by modern browsers which only includes code to access
-  the API. This version can only be used in browsers that have native support for promises, fetch
-  an modern objects. Roughly this applies to Firefox >= 39, Chrome >= 42, Opera > 29, Edge and
-  modern versions of Chrome for Android.
+- A **lightweight version** that can be used by [modern browsers](http://www.iwanttouse.com/#fetch,promises)
+  which only includes code to access the API. This version can only be used in browsers that have
+  native support for promises, fetch an modern objects. Roughly this applies to Firefox >= 39,
+  Chrome >= 42, Opera > 29, Edge and modern versions of Chrome for Android.
 
   The minified version of this library is *~7kB*.
 
