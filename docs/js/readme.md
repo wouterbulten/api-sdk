@@ -15,4 +15,6 @@ Follow the steps below to add a product to your page:
 ## Additional information:
 
 * [Configuration](configuration.md)
-* [Full Example](full-example.md)
+* Examples:
+  * [Full Example](examples/full-example.md)
+  * [PDF download button](examples/pdf-button.md)
