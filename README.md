@@ -8,11 +8,7 @@ Currently we have code examples for PHP. Documentation and support for other lan
 
 ## Getting started
 
-This SDK includes a getting started guide and code examples for each platform that we support.
-
-- PHP
-  * [Getting started guide PHP](docs/getting-started/getting-started-with-php.md)
-  * [PHP SDK](src/php)
+The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](docs/js) for more information and code examples.  
 
 ## Questions and feature requests
 
