@@ -1,6 +1,6 @@
 # Available products
 
-The tables below show all the available products of the 123test API.
+The tables below shows all the available products of the 123test API.
 
 # English
 
