@@ -4,7 +4,7 @@
 
 API documentation and code examples to integrate tests of 123test into your own products and websites.
 
-Currently we have code examples for PHP. Documentation and support for other languages (including Java & C#) will be added soon.
+See our [products list](docs/available-products.md) for an overview of all the tests you can access.
 
 ## Getting started
 
