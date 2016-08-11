@@ -9,7 +9,7 @@ The tables below shows all the available products of the 123test API.
 | jung-en_us-1               	| Jung personality test   	| ✅         	| ✅              	| ✅              	| ✅            	| ✅           	| ✅           	|
 | disc-en_us-1               	| DISC personality test   	| ❌ / 🚧    	| 🚧             	| 🚧             	| 🚧           	| 🚧          	| ✅           	|
 | iq-classical-short-en_us-1 	| Short classical IQ test 	| ❌ / 🚧    	| 🚧             	| ❌              	| ❌            	| ❌           	| ✅           	|
-
+| careertest-en_us-1          | Career test               | ❌ / 🚧      | 🚧          	| 🚧             	| 🚧           	| 🚧          	| ✅           	|
 - ✅ = Available
 - ❌ = Not Available
 - 🚧 = Under construction / will be available
