@@ -44,27 +44,37 @@ api.loadProduct('jung-en_us-1').then(function(product) {
 });
 ```
 
-## Not showing the report / showing a different version
+## Passing options to `loadProduct`
+
+The `loadProduct` function accepts a second parameter for options. Currently the supported options are:
+
+- 'user' *(string, default = '')*: Valid UUID v4 identifying the current user
+- 'showReport' *(boolean, default = true)*: Set to false to prevent automatically showing the report to the user
+- 'storage' *(boolean, default = true)*: Whether to use localStorage to temporarily store product information.
+
+### Example: Not showing the report / showing a different version
 
 To not show a report (or do this manually) pass an additional parameter to the `loadProduct` function:
 
 ```js
 ...
 
-api.loadProduct('jung-en_us-1', false).then(function(product) {
+api.loadProduct('jung-en_us-1', {
+  showReport: false
+}).then(function(product) {
   //Reports are not shown, you can do this here manually
   //...
 });
 ```
 
-### Example: Manually showing a report
+## Example: Manually showing a report
 
 All API requests are performed using Promises and can therefore be chained and altered:
 
 ```js
 ...
 
-api.loadProduct('jung-en_us-1', false)
+api.loadProduct('jung-en_us-1', { showReport: false })
   .then(function(product) {
     // Get the access code for a specific report
     var report = product.reports[0].access_code;
