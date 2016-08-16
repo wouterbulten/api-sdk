@@ -48,9 +48,9 @@ api.loadProduct('jung-en_us-1').then(function(product) {
 
 The `loadProduct` function accepts a second parameter for options. Currently the supported options are:
 
-- 'user' *(string, default = '')*: Valid UUID v4 identifying the current user
-- 'showReport' *(boolean, default = true)*: Set to false to prevent automatically showing the report to the user
-- 'storage' *(boolean, default = true)*: Whether to use localStorage to temporarily store product information.
+- `user` *(string, default = '')*: Valid UUID v4 identifying the current user
+- `showReport` *(boolean, default = true)*: Set to false to prevent automatically showing the report to the user
+- `storage` *(boolean, default = true)*: Whether to use localStorage to temporarily store product information.
 
 ### Example: Not showing the report / showing a different version
 
