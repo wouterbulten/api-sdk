@@ -54,11 +54,12 @@ The `loadProduct` function accepts a second parameter for options. Currently the
 
 ### Example: Not showing the report / showing a different version
 
-To not show a report (or do this manually) pass an additional parameter to the `loadProduct` function:
+To not show a report (or do this manually) pass an additional parameter to the `loadProduct` function. Then you can extend the Promise chain or use one of the events:
 
 ```js
 ...
 
+// Using the Promise chain:
 api.loadProduct('jung-en_us-1', {
   showReport: false
 }).then(function(product) {
@@ -66,6 +67,20 @@ api.loadProduct('jung-en_us-1', {
   //...
 });
 ```
+
+```js
+// Using the event system:
+api.on('product-completed', function(product) {
+  //Reports are not shown, you can do this here manually
+  //...
+});
+
+api.loadProduct('jung-en_us-1', {
+  showReport: false
+});
+```
+
+**Tip:** See the [events](events.md) documentation for more information about adding event listeners.
 
 ## Example: Manually showing a report
 
