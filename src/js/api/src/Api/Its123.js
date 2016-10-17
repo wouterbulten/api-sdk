@@ -1,9 +1,7 @@
 /*
 123Test Api v2
 
-@license (c) 2016 http://www.123test.com/ - All rights reserved.
-@author Wouter Bulten
-@author Theo den Hollander
+@license (c) 2016 Theo den Hollander & Wouter Bulten - http://www.123test.com/ - All rights reserved.
 */
 
 /**
@@ -34,7 +32,7 @@ const defaultApiConfig = {
 };
 
 /**
- * Api key for BugSnag
+ * Api key for BugSnag (Optional)
  * @type {String}
  */
 const debugApiKey = '';
@@ -153,6 +151,10 @@ class Its123 {
               this.triggerEvent('instrument-already-completed',
                 { accessCode: i.access_code, status });
               return false;
+            case 'in-progress':
+              this.triggerEvent('instrument-continue',
+                { accessCode: i.access_code, status });
+              return true;
             case 'started':
             default:
               return true;
@@ -223,6 +225,7 @@ class Its123 {
   processApiInstrumentResponse(accessCode, { status, resources, body }) {
     switch (status) {
       case 'started':
+      case 'in-progress':
         this.updateInstrumentInStorage(accessCode, status);
         return this.loadResources(resources)
           .then(() => this.renderInstrument(body))
@@ -338,10 +341,11 @@ class Its123 {
       form.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        // Disable the button
-        Array.from(event.target.getElementsByTagName('button')).forEach(
-          b => { b.disabled = true; } // eslint-disable-line no-param-reassign
-        );
+        // Disable all buttons in the form
+        const buttons = event.target.getElementsByTagName('button');
+        for (let b = 0; b < buttons.length; b++) {
+          buttons[b].disabled = true;
+        }
         resolve({ form, event });
       });
     });
@@ -458,7 +462,8 @@ class Its123 {
       const resource = resources[key];
       if (resource.type === 'js'
         && typeof window.its123[resource.func] === 'function') {
-        window.its123[resource.func]();
+        // Give context as variable
+        window.its123[resource.func](this.api);
       }
     });
   }
