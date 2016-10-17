@@ -4,11 +4,13 @@
 
 API documentation and code examples to integrate tests of 123test into your own products and websites.
 
-See our [products list](docs/available-products.md) for an overview of all the tests you can access.
+See our [products list](docs/available-products.md) for an overview of all the tests you can access. More products will be added in the future.
 
 ## Getting started
 
 The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](docs/js) for more information and code examples.  
+
+*Quick example?* A minimal Javascript [code example](docs/js/examples/full-example.md) is available [here](docs/js/examples/full-example.md).
 
 ## Questions and feature requests
 
@@ -22,4 +24,4 @@ Access to the services of the 123test API is only possible using an API key. Use
 
 The SDK documentation and code examples are licensed under the MIT License.
 
-Copyright (c) 2015 123test
+Copyright (c) 2016 123test
