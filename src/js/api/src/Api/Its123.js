@@ -1,7 +1,11 @@
 /*
-123Test Api v2
-
-@license (c) 2016 Theo den Hollander & Wouter Bulten - http://www.123test.com/ - All rights reserved.
+ * 123Test Api v2
+ *
+ * http://www.123test.com/
+ *
+ * @author Wouter Bulten
+ * @author Theo den Hollander
+ * @license Licensed under MIT (https://github.com/123test/api-sdk/blob/master/LICENSE)
 */
 
 /**
