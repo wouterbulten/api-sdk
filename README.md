@@ -6,6 +6,15 @@ API documentation and code examples to integrate tests of 123test into your own 
 
 See our [products list](docs/available-products.md) for an overview of all the tests you can access. More products will be added in the future.
 
+Features:
+
+- Integrate tests on your own website
+- White label (colors and logo) available
+- Users do not leave your website
+- Easy to use and install
+- Javascript SDK available
+- PDF and HTML versions of test reports
+
 ## Getting started
 
 The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](docs/js) for more information and code examples.  
