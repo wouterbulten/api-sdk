@@ -2,6 +2,8 @@
 
 The tables below show all the available products of the 123test API. More products are in development and will be added later. Access to products is granted on a case-by-case basis. Please contact us for more information.
 
+Information about tests themselves can be found online at: https://www.testingtalents.nl/tests.html
+
 # Dutch
 
 | ID                          | Description                   | Available | Standard Report | Premium Report | Standard PDF | Premium PDF | White label |
