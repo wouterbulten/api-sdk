@@ -9,11 +9,11 @@ Information about tests themselves can be found online at: https://www.testingta
 | ID                          | Description                   | Available | Standard Report | Premium Report | Standard PDF | Premium PDF | White label |
 |-----------------------------|-------------------------------|-----------|-----------------|----------------|--------------|-------------|-------------|
 | vitaliteit-nl_nl-1          | Vitaliteitscheck              | ✅         | ✅               | ❌              | ✅            | ❌           | ✅           |
-| competentietest-nl_nl-1     | Professionele competentietest | ✅         | ❌               | ✅              | ❌            | ✅           | ✅           |
+| competentietest-nl_nl-1     | Professionele competentietest | 🚧         | ❌               | ✅              | ❌            | ✅           | ✅           |
 | sectorinteressetest-nl_nl-1 | Sector interessetest          | ✅         | ✅               | ❌              | ✅            | ❌           | ✅           |
 | short-personality-nl_nl-1   | Korte persoonlijkheidstest    | 🚧        | ✅               | ❌              | ✅            | ❌           | ✅           |
 | leary-nl_nl-1               | Rose van Leary test           | 🚧        | ✅               | ❌              | ❌            | ❌           | ✅           |
-| beroepskeuzetest-nl_nl-1    | Beroepskeuzetest              | ✅         | ❌               | ✅              | ❌            | ✅           | ✅           |
+| beroepskeuzetest-nl_nl-1    | Beroepskeuzetest              | 🚧         | ❌               | ✅              | ❌            | ✅           | ✅           |
 
 - ✅ = Available
 - ❌ = Not Available
