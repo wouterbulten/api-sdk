@@ -3,15 +3,12 @@
 # API-SDK for 123test
 API-SDK for 123test
 API documentation and code examples to fully integrate tests of 123test into websites (both questionnaires and test results).
-Conditions and requirements
+##Conditions and requirements
 - For organizations that provide professional career guidance and services to individuals
 - For use by authenticated users (logged into an intranet, career portal, LMS … )
 - You must have an IT team in place to implement the API
 - Licenses based on pay-per-report or flat fee agreements
 
-##Tests available
-See our [products list](docs/available-products.md) for an overview of tests currently available. More tests are added continuously.
- 
 ## Some Features:
 - Users take tests and view their results on your website
 - White label option available (logo and colors)
@@ -19,6 +16,9 @@ See our [products list](docs/available-products.md) for an overview of tests cur
 - HTML and PDF versions of test reports
 - Integrate tests very easily through our Javascript SDK
 
+##Tests available
+See our [products list](docs/available-products.md) for an overview of tests currently available. More tests are added continuously.
+ 
 ## Getting started
 The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](docs/js) for more information and code examples.  
 
