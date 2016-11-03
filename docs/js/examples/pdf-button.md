@@ -7,7 +7,7 @@ title: JS SDK - Full PDF example
 
 If you have access to PDF version of reports you can add a download link for your users. The code below describes how to show a button (with a link to the PDF report) after the test has finished.
 
-```HTML
+```html
 <!DOCTYPE html>
 <html>
 <head>

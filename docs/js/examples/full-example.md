@@ -7,7 +7,7 @@ title: JS SDK - Full example
 
 The code below is the minimal approach to loading a Jung test including report:
 
-```HTML
+```html
 <!DOCTYPE html>
 <html>
 <head>

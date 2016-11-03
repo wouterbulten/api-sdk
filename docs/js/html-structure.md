@@ -18,7 +18,7 @@ There are a few requirements to your HTML before you can load products (instrume
 
 The most basic example is as follows:
 
-```HTML
+```html
 
 <div id="its123api-loading">
   <!-- Custom loading message -->
