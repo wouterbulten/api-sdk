@@ -1,3 +1,8 @@
+---
+layout: default
+title: JS SDK - Setting up
+---
+
 # Setting up
 
 123test offers a ready-to-use Javascript library to access the API. The library manages

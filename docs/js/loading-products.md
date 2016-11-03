@@ -1,4 +1,9 @@
-> Make sure to read the [Setting Up](loading-product.md) and [HTML structure](html-structure.md) guide first before follwing the guide below.
+---
+layout: default
+title: JS SDK - Loading products
+---
+
+> Make sure to read the [Setting Up](loading-product) and [HTML structure](html-structure) guide first before follwing the guide below.
 
 # Loading a product
 
@@ -80,7 +85,7 @@ api.loadProduct('jung-en_us-1', {
 });
 ```
 
-**Tip:** See the [events](events.md) documentation for more information about adding event listeners.
+**Tip:** See the [events](events) documentation for more information about adding event listeners.
 
 ## Example: Manually showing a report
 

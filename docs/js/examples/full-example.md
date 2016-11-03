@@ -1,3 +1,8 @@
+---
+layout: default
+title: JS SDK - Full example
+---
+
 # Full Example
 
 The code below is the minimal approach to loading a Jung test including report:

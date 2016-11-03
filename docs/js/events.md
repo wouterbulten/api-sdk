@@ -1,3 +1,8 @@
+---
+layout: default
+title: JS SDK - Events
+---
+
 # Events
 
 The 123test API library uses events to signal important parts of the test process. Event listeners can be attached to extend the behaviour of the API.
