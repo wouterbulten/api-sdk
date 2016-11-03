@@ -14,7 +14,7 @@ API documentation and code examples to fully integrate tests of 123test into web
 - You must have an IT team in place to implement the API
 - Licenses based on pay-per-report or flat fee agreements
 
-## Some Features:
+## Some features:
 - Users take tests and view their results on your website
 - White label option available (logo and colors)
 - Full responsiveness
