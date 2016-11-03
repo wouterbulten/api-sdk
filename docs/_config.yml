@@ -1,11 +1,15 @@
 # Setup
-title:        123test API
-tagline:      API-SDK for 123test API documentation and code examples to fully integrate tests of 123test into websites (both questionnaires and test results).
+title:        API SDK
+tagline:      SDK for the 123test API. Documentation and code examples to fully integrate tests of 123test into websites (both questionnaires and test results).
 baseurl:      "/api-sdk"
-
+permalink: pretty
 # Gems
 gems:
 #  - jekyll-paginate
 
 #Others
 markdown: kramdown
+
+collections:
+  products:
+    output: true
