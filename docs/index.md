@@ -21,7 +21,7 @@ API documentation and code examples to fully integrate tests of 123test into web
 - Integrate tests very easily through our Javascript SDK
 
 ## Tests available
-See our [products list](available-products) for an overview of tests currently available. More tests are added continuously.
+See our [products list](products) for an overview of tests currently available. More tests are added continuously.
 
 ## Getting started
 The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](js) for more information and code examples.
