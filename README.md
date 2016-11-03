@@ -1,9 +1,10 @@
 ![123test logo](https://cdn.123test.com/gedeeld/vertalingen/beeld/123test_logo_en-us.png)
 
 # API-SDK for 123test
-API-SDK for 123test
+
 API documentation and code examples to fully integrate tests of 123test into websites (both questionnaires and test results).
-##Conditions and requirements
+
+## Conditions and requirements
 - For organizations that provide professional career guidance and services to individuals
 - For use by authenticated users (logged into an intranet, career portal, LMS … )
 - You must have an IT team in place to implement the API
@@ -16,13 +17,13 @@ API documentation and code examples to fully integrate tests of 123test into web
 - HTML and PDF versions of test reports
 - Integrate tests very easily through our Javascript SDK
 
-##Tests available
-See our [products list](docs/available-products.md) for an overview of tests currently available. More tests are added continuously.
- 
-## Getting started
-The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](docs/js) for more information and code examples.  
+## Tests available
+See our [products list](https://123test.github.io/api-sdk/available-products) for an overview of tests currently available. More tests are added continuously.
 
-*Quick example?* A minimal Javascript [code example](docs/js/examples/full-example.md) is available [here](docs/js/examples/full-example.md).
+## Getting started
+The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](https://123test.github.io/api-sdk/js) for more information and code examples.  
+
+*Quick example?* A minimal Javascript [code example](https://123test.github.io/api-sdk//js/examples/full-example) is available [here](docs/js/examples/full-example.md).
 
 ## Questions and feature requests
 
