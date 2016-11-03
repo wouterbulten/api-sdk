@@ -9,4 +9,4 @@ gems:
 #  - jekyll-paginate
 
 #Others
-markdown: kramdown
+markdown: rouge
