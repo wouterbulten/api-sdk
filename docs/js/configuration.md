@@ -1,3 +1,8 @@
+---
+layout: default
+title: JS SDK - Configuration
+---
+
 # Configuration
 
 Overview of all the API options that can be set:
