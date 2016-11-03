@@ -26,6 +26,8 @@ See our [products list](available-products) for an overview of tests currently a
 ## Getting started
 The recommended way to access the 123test API is by utilizing our client side Javascript library. See the [Javascript Documentation](js) for more information and code examples.
 
+Other SDK's are available through the [overview page](overview).
+
 *Quick example?* A minimal Javascript [code example](js/examples/full-example) is available [here](js/examples/full-example).
 
 ## Questions and feature requests
