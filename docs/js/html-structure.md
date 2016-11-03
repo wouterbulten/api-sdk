@@ -5,7 +5,7 @@ title: JS SDK - HTML structure
 
 # HTML structure
 
-> Make sure to read the [Setting Up](loading-product) guide first before you follow the guide below.
+> Make sure to read the [Setting Up](setting-up) guide first before you follow the guide below.
 
 There are a few requirements to your HTML before you can load products (instruments and reports). The most basic setup contains three div elements:
 

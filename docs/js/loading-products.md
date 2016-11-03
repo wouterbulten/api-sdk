@@ -3,7 +3,7 @@ layout: default
 title: JS SDK - Loading products
 ---
 
-> Make sure to read the [Setting Up](loading-product) and [HTML structure](html-structure) guide first before follwing the guide below.
+> Make sure to read the [Setting Up](setting-up) and [HTML structure](html-structure) guide first before follwing the guide below.
 
 # Loading a product
 
