@@ -1,12 +1,31 @@
 /*
  * 123Test Api v2
  *
- * http://www.123test.com/
+ * @author Wouter Bulten <github.com/wouterbulten>
+ * @author Theo den Hollander <github.com/theodenhollander>
+ * @license
+ * The MIT License (MIT)
  *
- * @author Wouter Bulten
- * @author Theo den Hollander
- * @license Licensed under MIT (https://github.com/123test/api-sdk/blob/master/LICENSE)
-*/
+ * Copyright (c) 2015 123test
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 /**
  * Default configuration for api, can be overriden by user
@@ -20,6 +39,7 @@ const defaultApiConfig = {
   // Environment config
   logErrors: false,
   environment: 'production',
+  bugSnagApiKey: '',
 
   // DOM config
   elements: {
@@ -34,12 +54,6 @@ const defaultApiConfig = {
 
   apiKey: 'not-set',
 };
-
-/**
- * Api key for BugSnag (Optional)
- * @type {String}
- */
-const debugApiKey = '';
 
 /**
  * Main API class
@@ -204,12 +218,15 @@ class Its123 {
   }
 
   /**
+  /**
    * Load an render a report by its access code
    * @param  {String} accessCode Access code for report
+   * @param  {String} metaData  Base64 encoded meta data
+   * @param  {String} metaHmac  HMAC for meta data
    * @return {Promise}
    */
-  loadReport(accessCode) {
-    return this.requestReport(accessCode)
+  loadReport(accessCode, { metaData, metaHmac } = {}) {
+    return this.requestReport(accessCode, { metaData, metaHmac })
       .then((body) => this.renderReport(body))
       .then(() => this.triggerEvent('report-ready'));
   }
@@ -475,10 +492,19 @@ class Its123 {
   /**
    * Request a report by its access code
    * @param  {String} accessCode access code for the report
+   * @param  {String} metaData  Base64 encoded meta data
+   * @param  {String} metaHmac  HMAC for meta data
    * @return {Promise}
    */
-  requestReport(accessCode) {
-    return fetch(`${this.api.endpoint}/report/${accessCode}`, {
+  requestReport(accessCode, { metaData = '', metaHmac = '' } = {}) {
+    let url;
+    if (metaData.length <= 0 || metaHmac.length <= 0) {
+      url = `${this.api.endpoint}/report/${accessCode}`;
+    } else {
+      url = `${this.api.endpoint}/report/${accessCode}?meta=${metaData}&meta_hmac=${metaHmac}`;
+    }
+
+    return fetch(url, {
       headers: {
         'X-123test-ApiKey': this.api.apiKey,
       },
@@ -630,7 +656,7 @@ class Its123 {
     script.src = `${this.api.domain}/logIts123.js`;
     script.onload = () => {
       /* global Bugsnag */
-      Bugsnag.apiKey = debugApiKey;
+      Bugsnag.apiKey = this.api.bugSnagApiKey;
       Bugsnag.releaseStage = this.api.environment;
     };
     head.appendChild(script);
