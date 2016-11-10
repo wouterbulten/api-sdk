@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node-sass scss --output-style compressed --output css",
     "minify": "node-sass scss --output-style compressed --output ../../dist/css",
-    "watch": "node-sass --watch scss --recursive --output css",
+    "watch": "node-sass --watch scss --output css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

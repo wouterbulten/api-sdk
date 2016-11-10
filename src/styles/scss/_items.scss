@@ -1,0 +1,24 @@
+// Base class for all item types
+//
+
+.its123-legend {
+  color: $color-primary;
+  font-weight: bold;
+  margin-bottom: 20px;
+  float: left;
+  width: 100%;
+}
+
+// Single select radio buttons, vertical
+.its123-item-single-select {
+  border: 22px;
+  padding: 20px 0 20px 20px;
+
+  &:nth-child(odd) {
+    background-color: #eee;
+  }
+
+  & .its123-option {
+    margin-bottom: 10px;
+  }
+}
