@@ -6,6 +6,9 @@
 // Import variables, can be overwritten by themes
 @import "_variables";
 
+// Breakpoint utilties
+@import "_breakpoints.scss";
+
 // General elements
 @import "_alerts";
 @import "_items";

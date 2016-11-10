@@ -9,16 +9,48 @@
   width: 100%;
 }
 
-// Single select radio buttons, vertical
-.its123-item-single-select {
-  border: 22px;
-  padding: 20px 0 20px 20px;
+.its123-item {
+  border: 0;
+  font-size: $font-size-item;
+
+  & select {
+    font-size: $font-size-item;
+  }
+}
+
+.its123-alternate-background {
+  padding: 20px 20px 20px 20px;
 
   &:nth-child(odd) {
     background-color: #eee;
   }
+}
+
+// Single select radio buttons, vertical
+.its123-item-single-select {
+  @extend .its123-alternate-background;
 
   & .its123-option {
     margin-bottom: 10px;
+  }
+}
+
+// single select dropdown vertical
+.its123-item-dropdown-vertical {
+  @extend .its123-alternate-background;
+
+  & .its123-option-select {
+    width: 100%;
+    height: 30px;
+    border-radius: 4px 0 0 4px;
+
+    @include media-breakpoint-up(md) {
+      width: 270px;
+    }
+  }
+
+  & .its123-label {
+    display: block;
+    margin-bottom: 15px;
   }
 }
