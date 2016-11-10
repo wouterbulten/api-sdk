@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>123test Style instrument example</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/themes/123test.css">
+
+    <style type="text/css">
+        .its123-container {
+            margin: 20px 0px 50px 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Instrument item examples</h1>
+
+    <h2>Default loading message</h2>
+    <div class="its123-container">
+        <div class="its123-loading-indicator">
+            <!-- Custom loading message -->
+            <p>Loading</p>
+        </div>
+    </div>
+
+    <h2>Item single select</h2>
+    <div class="its123-container">
+        <fieldset class="its123-item its123-item-single-select">
+            <legend class="its123-legend">1. Would you prefer to read</legend>
+
+            <div class="its123-options">
+                <div class="its123-option">
+                    <label class="its123-label its123-radio-label">
+                        <input type="radio" value="0" class="its123-option-radio">
+                        a fictional story or poem
+                    </label>
+                </div>
+                <div class="its123-option">
+                    <label class="its123-label its123-radio-label">
+                        <input type="radio" value="1" class="its123-option-radio">
+                        a news story
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <h2>Item single select dropdown</h2>
+    <div class="its123-container">
+        <div class="control-group ">
+            <label for="its123-dropdown" class="its123-label its123-label-dropdown">I am a</label>
+
+            <div class="its123-options">
+                <div class="its123-option its123-input-append">
+                    <select name="its123-dropdown" id="its123-dropdown" class="its123-option-select">
+                        <option></option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                    </select>
+
+                    <span class="its123-add-on">
+                        <i class="its123-icon-required"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

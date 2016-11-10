@@ -26,5 +26,6 @@
     "core-js": "^2.4.1",
     "whatwg-fetch": "^1.0.0"
   },
+  "license": "MIT",
   "private": true
 }

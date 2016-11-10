@@ -1,0 +1,17 @@
+// Base file
+//
+// Defines defaults for all variables
+//
+
+// general block level settings
+$border-radius: 3px !default;
+
+// Font settings
+$font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+// General info messages/alerts
+$state-info-text:    #3a87ad !default;
+$state-info-bg:      #d9edf7 !default;
+$state-info-border:  #bce8f1 !default;
+
+$alert-padding: 5px !default;
