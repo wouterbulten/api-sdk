@@ -10,7 +10,7 @@ legend.its123-legend {
 }
 
 
-fieldset.its123-item {
+.its123-item, fieldset.its123-item {
   font-size: $font-size-item;
   color: $text-color-item;
   line-height: $font-line-height-item;
@@ -78,5 +78,41 @@ fieldset.its123-item {
     .its123-options {
       margin-left: 180px;
     }
+  }
+}
+
+// Likert tables
+.its123-likert {
+  max-width: 100%;
+
+  .its123-counter {
+    background-color: lighten($color-secondary, 60%);
+    color: $color-secondary;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 19px;
+    width: 30px;
+    height: 18px;
+    display: inline-block;
+    text-align: center;
+  }
+  .its123-table-header {
+    text-align: center;
+    color: $color-secondary;
+    font-weight: bold;
+
+    hr {
+      background-color: $text-color;
+    }
+  }
+
+  .its123-label {
+    margin-right: 20px;
+  }
+
+  .its123-radio {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 8px 6px 8px 6px;
   }
 }

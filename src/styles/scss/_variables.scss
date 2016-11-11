@@ -5,8 +5,9 @@
 
 // General colors
 $color-primary: #DB7B03 !default;
+$color-secondary: #0182A9 !default;
 $text-color:    #777777 !default;
-$link-color:    #0182A9 !default;
+$link-color:    $color-secondary !default;
 $link-hover-color: $link-color !default;
 $text-muted:    lighten($text-color, 15%) !default;
 $item-bg-color: #ffffff !default;

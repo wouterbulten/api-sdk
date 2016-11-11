@@ -4,13 +4,13 @@
     <title>123test Style instrument example</title>
 
     <link rel="stylesheet" type="text/css" href="../css/themes/123test.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style type="text/css">
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
         .its123-container {
-            margin: 20px 0px 50px 50px;
+            margin: 20px 0px 50px 0px;
             max-width: 960px;
         }
     </style>
@@ -150,43 +150,74 @@
         </fieldset>
     </div>
 
-    <h2>Item Likert 4</h2>
+    <h2>Item Likert (4/5)</h2>
     <div class="its123-container">
-        <table class="its123-likert-4">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>--</th>
-                    <th>-</th>
-                    <th>+</th>
-                    <th>++</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="its123-item">
-                    <td>
-                        <div class="its123-control-group">
-                            <label class="its123-item">1. I enjoy my work</label>
-                        </div>
-                    </td>
+        <table class="its123-likert">
+            <tr class="its123-table-header">
+                <td colspan="2"><hr></td>
+                <td>--</td>
+                <td>-</td>
+                <td>-/+</td>
+                <td>+</td>
+                <td>++</td>
+            </tr>
 
-                    <td>
-                        <input type="radio" value="1" class="its123-radio">
-                    </td>
+            <tr class="its123-item">
+                <td>
+                    <span class="its123-counter">1.</span>
+                </td>
+                <td>
+                    <label class="its123-label">I believe that people basically have good intentions</label>
+                </td>
 
-                    <td>
-                        <input type="radio" value="2" class="its123-radio">
-                    </td>
+                <td>
+                    <input type="radio" value="1" class="its123-radio">
+                </td>
 
-                    <td>
-                        <input type="radio" value="3" class="its123-radio">
-                    </td>
+                <td>
+                    <input type="radio" value="2" class="its123-radio">
+                </td>
 
-                    <td>
-                        <input type="radio" value="4" class="its123-radio">
-                    </td>
-                </tr>
-            </tbody>
+                <td>
+                    <input type="radio" value="3" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="4" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="5" class="its123-radio">
+                </td>
+            </tr>
+            <tr class="its123-item">
+                <td>
+                    <span class="its123-counter">2.</span>
+                </td>
+                <td>
+                    <label class="its123-label">I often forget to put things back in their proper place	</label>
+                </td>
+
+                <td>
+                    <input type="radio" value="1" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="2" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="3" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="4" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="5" class="its123-radio">
+                </td>
+            </tr>
         </table>
     </div>
 </body>
