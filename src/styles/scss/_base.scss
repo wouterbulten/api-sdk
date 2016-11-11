@@ -16,10 +16,11 @@
 @import "_alerts";
 @import "_items";
 @import "_icons";
-
+@import "_tables";
 
 .its123-container {
   font-family: $font-family;
+  color: $text-color;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
