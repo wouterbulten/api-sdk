@@ -6,14 +6,20 @@
 // Import variables, can be overwritten by themes
 @import "_variables";
 
-// Breakpoint utilties
-@import "_breakpoints.scss";
+// Utilities
+@import "_reset";
+
+@import "_breakpoints";
+@import "_utilities";
 
 // General elements
 @import "_alerts";
 @import "_items";
+@import "_icons";
 
-// Base styles
 .its123-container {
   font-family: $font-family;
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }

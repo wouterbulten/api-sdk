@@ -5,9 +5,17 @@
 
 // General colors
 $color-primary: #DB7B03 !default;
+$text-color:    #777777 !default;
+$link-color:    #0182A9 !default;
+$link-hover-color: $link-color !default;
+$text-muted:    lighten($text-color, 15%) !default;
+$item-bg-color: #ffffff !default;
 
 // general block level settings
 $border-radius: 3px !default;
+$item-padding: 20px 20px 20px 20px !default;
+$item-border: 1px solid #ccc !default;
+$fieldset-border: 0 !default;
 
 $grid-breakpoints: (
   xs: 0,
@@ -19,7 +27,11 @@ $grid-breakpoints: (
 
 // Font settings
 $font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$font-size-item: 14px;
+$font-size-item: 14px !default;
+$font-line-height-item: 20px !default;
+$text-color-item: $text-color !default;
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
 
 // General info messages/alerts
 $state-info-text:    #3a87ad !default;
@@ -27,3 +39,7 @@ $state-info-bg:      #d9edf7 !default;
 $state-info-border:  #bce8f1 !default;
 
 $alert-padding: 5px !default;
+
+// Tables
+$table-bg:  #fff !default;
+$table-cell-padding: 5px !default;

@@ -6,8 +6,12 @@
     <link rel="stylesheet" type="text/css" href="../css/themes/123test.css">
 
     <style type="text/css">
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
         .its123-container {
             margin: 20px 0px 50px 50px;
+            max-width: 960px;
         }
     </style>
 </head>
@@ -69,17 +73,24 @@
             <label for="its123-dropdown" class="its123-label">I am a</label>
 
             <div class="its123-options">
-                <div class="its123-option its123-input-append">
-                    <select name="its123-dropdown" id="its123-dropdown" class="its123-option-select">
-                        <option></option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                    </select>
+                <select name="its123-dropdown" id="its123-dropdown" class="its123-option-select">
+                    <option></option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                </select>
+            </div>
+        </fieldset>
+        <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-horizontal">
+            <label for="its123-dropdown" class="its123-label">My age is</label>
 
-                    <span class="its123-add-on">
-                        <i class="its123-icon-required"></i>
-                    </span>
-                </div>
+            <div class="its123-options">
+                <select name="its123-dropdown" id="its123-dropdown" class="its123-option-select">
+                    <option></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
             </div>
         </fieldset>
     </div>
