@@ -4,18 +4,19 @@
 //
 
 // General colors
-$color-primary: #DB7B03 !default;
-$color-secondary: #0182A9 !default;
-$text-color:    #777777 !default;
-$link-color:    $color-secondary !default;
-$link-hover-color: $link-color !default;
-$text-muted:    lighten($text-color, 15%) !default;
-$item-bg-color: #ffffff !default;
+$color-primary:     #DB7B03 !default;
+$color-secondary:   #0182A9 !default;
+$text-color:        #777777 !default;
+$link-color:        $color-secondary !default;
+$link-hover-color:  $link-color !default;
+$text-muted:        lighten($text-color, 15%) !default;
+$item-bg-color:     #ffffff !default;
+$item-border-color: #ccc !default;
 
 // general block level settings
 $border-radius: 3px !default;
 $item-padding: 20px 20px 20px 20px !default;
-$item-border: 1px solid #ccc !default;
+$item-border: 1px solid $item-border-color !default;
 $fieldset-border: 0 !default;
 
 $grid-breakpoints: (
