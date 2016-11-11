@@ -8,14 +8,15 @@
 
 // Utilities
 @import "_reset";
-
 @import "_breakpoints";
 @import "_utilities";
 
 // General elements
+@import "_typography";
 @import "_alerts";
 @import "_items";
 @import "_icons";
+
 
 .its123-container {
   font-family: $font-family;
