@@ -3,7 +3,7 @@
 <head>
     <title>123test Style instrument example</title>
 
-    <link rel="stylesheet" type="text/css" href="../css/themes/123test.css">
+    <link rel="stylesheet" type="text/css" href="css/themes/123test.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style type="text/css">
         body {
@@ -18,14 +18,6 @@
 <body>
 
     <h1>Instrument item examples</h1>
-
-    <h2>Default loading message</h2>
-    <div class="its123-container">
-        <div class="its123-loading-indicator">
-            <!-- Custom loading message -->
-            <p>Loading</p>
-        </div>
-    </div>
 
     <h2>Item single select</h2>
     <div class="its123-container">
@@ -150,7 +142,7 @@
         </fieldset>
     </div>
 
-    <h2>Item Likert (4/5)</h2>
+    <h2>Item Likert 5</h2>
     <div class="its123-container">
         <table class="its123-likert">
             <tr class="its123-table-header">
@@ -208,6 +200,68 @@
 
                 <td>
                     <input type="radio" value="3" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="4" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="5" class="its123-radio">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Item Likert 4</h2>
+    <div class="its123-container">
+        <table class="its123-likert">
+            <tr class="its123-table-header">
+                <td colspan="2"><hr></td>
+                <td>--</td>
+                <td>-</td>
+                <td>+</td>
+                <td>++</td>
+            </tr>
+
+            <tr class="its123-item">
+                <td>
+                    <span class="its123-counter">1.</span>
+                </td>
+                <td>
+                    <label class="its123-label">I believe that people basically have good intentions</label>
+                </td>
+
+                <td>
+                    <input type="radio" value="1" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="2" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="4" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="5" class="its123-radio">
+                </td>
+            </tr>
+            <tr class="its123-item">
+                <td>
+                    <span class="its123-counter">2.</span>
+                </td>
+                <td>
+                    <label class="its123-label">I often forget to put things back in their proper place	</label>
+                </td>
+
+                <td>
+                    <input type="radio" value="1" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="2" class="its123-radio">
                 </td>
 
                 <td>
@@ -294,6 +348,23 @@
                 <span class="its123-thumbs-text">People say I have a strong personality</span>
             </div>
         </div>
+    </div>
+
+    <h1>General elements</h1>
+
+    <h2>Default loading message</h2>
+    <div class="its123-container">
+        <div class="its123-loading-indicator">
+            <!-- Custom loading message -->
+            <p>Loading</p>
+        </div>
+    </div>
+
+    <h2>Buttons</h2>
+    <div class="its123-container">
+        <button class="its123-button">Next</button>
+        <button class="its123-button" type="submit">Submit</button>
+        <button class="its123-button" disabled>Disabled</button>
     </div>
 
     <h1>Report examples</h1>
