@@ -100,6 +100,17 @@ legend.its123-legend {
       margin-right: 10px;
     }
   }
+
+  .its123-error .its123-option {
+    border: 1px solid $error-border-color;
+
+    &:first-child {
+      border-right: 0;
+    }
+    &:last-child {
+      border-left: 0;
+    }
+  }
 }
 
 // single select dropdown vertical
