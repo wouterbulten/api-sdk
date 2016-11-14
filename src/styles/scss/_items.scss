@@ -46,11 +46,40 @@ legend.its123-legend {
 }
 
 // Single select radio buttons, vertical
-.its123-item-single-select {
+.its123-item-single-select-vertical {
   @extend .its123-alternate-background;
 
   .its123-option {
     margin-bottom: 10px;
+  }
+}
+
+// Single select radio buttons, horizontal
+.its123-item-single-select-horizontal-container {
+  display: table;
+  width:100%;
+
+  .its123-item {
+    display: table-row-group;
+  }
+  .its123-options {
+    display: table-row;
+  }
+  .its123-option {
+    display: table-cell;
+    padding: 10px;
+  }
+  .its123-option:first-child {
+    text-align: right;
+    input {
+      margin-left: 10px;
+    }
+  }
+  .its123-option:last-child {
+    text-align: left;
+    input {
+      margin-right: 10px;
+    }
   }
 }
 
