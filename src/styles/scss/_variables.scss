@@ -10,13 +10,19 @@ $text-color:          #373a3c !default;
 $link-color:          $color-secondary !default;
 $link-hover-color:    $link-color !default;
 $text-muted:          lighten($text-color, 15%) !default;
+
 $item-bg-color:       #ffffff !default;
 $item-border-color:   #ccc !default;
+
 $table-border-color:  #ccc !default;
+
 $button-bg-from:      #01A4D3 !default;
 $button-bg-to:        #0182A9 !default;
 $button-border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25) !default;
 $button-text-color:   #ffffff !default;
+
+$error-text-color:    #C10000 !default;
+$error-border-color:  transparentize($error-text-color, 0.5) !default;
 
 // general block level settings
 $border-radius: 3px !default;

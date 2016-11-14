@@ -31,6 +31,18 @@ legend.its123-legend {
     border: $item-border;
     border-radius: .25rem;
   }
+
+  &.its123-error {
+    color: $error-text-color;
+
+    legend {
+      color: $error-text-color;
+    }
+
+    select {
+      border-color: $error-border-color;
+    }
+  }
 }
 
 .its123-option-select {
@@ -51,6 +63,12 @@ legend.its123-legend {
 
   .its123-option {
     margin-bottom: 10px;
+  }
+  input {
+    margin-right: 5px;
+  }
+  &.its123-error {
+    border: 1px solid $error-border-color;
   }
 }
 
@@ -90,6 +108,9 @@ legend.its123-legend {
   .its123-label {
     display: block;
     margin-bottom: 15px;
+  }
+  &.its123-error {
+    border: 1px solid $error-border-color;
   }
 }
 
@@ -183,6 +204,11 @@ legend.its123-legend {
   }
   .its123-thumb-icon:hover use {
       fill: #c1c1c1;
+  }
+
+  &.its123-error {
+    border-color: $error-border-color;
+    color: $error-text-color;
   }
 
   input[type="radio"] {

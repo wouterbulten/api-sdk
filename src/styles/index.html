@@ -17,9 +17,13 @@
 </head>
 <body>
 
-    <h1>Instrument item examples</h1>
+    <h1>123test API Style Guide overview</h1>
 
-    <h2>Item single select (vertical)</h2>
+    <p>Overview of all elements the instruments and reports consist of.</p>
+
+    <h2>Instrument item examples</h2>
+
+    <h3>Item single select (vertical)</h3>
     <div class="its123-container">
         <fieldset class="its123-item its123-item-single-select-vertical">
             <legend class="its123-legend">1. Would you prefer to read</legend>
@@ -57,9 +61,27 @@
                 </div>
             </div>
         </fieldset>
+        <fieldset class="its123-item its123-item-single-select-vertical its123-error">
+            <legend class="its123-legend">2. Do you find it more natural to remember</legend>
+
+            <div class="its123-options">
+                <div class="its123-option">
+                    <label class="its123-label">
+                        <input type="radio" value="0" class="its123-option-radio">
+                        numbers and figures
+                    </label>
+                </div>
+                <div class="its123-option">
+                    <label class="its123-label">
+                        <input type="radio" value="1" class="its123-option-radio">
+                        faces and names
+                    </label>
+                </div>
+            </div>
+        </fieldset>
     </div>
 
-    <h2>Item single select (horizontal)</h2>
+    <h3>Item single select (horizontal)</h3>
     <div class="its123-container">
         <div class="its123-item-single-select-horizontal-container">
             <div class="its123-item its123-item-single-select-horizontal">
@@ -113,10 +135,27 @@
                     </div>
                 </div>
             </div>
+            <div class="its123-item its123-item-single-select-horizontal its123-error">
+
+                <div class="its123-options">
+                    <div class="its123-option">
+                        <label class="its123-label">
+                            Orderly
+                            <input type="radio" name="issh3" value="0" class="its123-option-radio">
+                        </label>
+                    </div>
+                    <div class="its123-option">
+                        <label class="its123-label">
+                            <input type="radio" name="issh3" value="1" class="its123-option-radio">
+                            Communicative
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <h2>Item single select dropdown (horizontal)</h2>
+    <h3>Item single select dropdown (horizontal)</h3>
     <div class="its123-container">
         <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-horizontal">
             <label for="its123-dropdown" class="its123-label">I am a</label>
@@ -142,9 +181,22 @@
                 </select>
             </div>
         </fieldset>
+        <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-horizontal its123-error">
+            <label for="its123-dropdown" class="its123-label">My age is</label>
+
+            <div class="its123-options">
+                <select name="its123-dropdown" id="its123-dropdown" class="its123-option-select">
+                    <option></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </fieldset>
     </div>
 
-    <h2>Item single select dropdown (vertical)</h2>
+    <h3>Item single select dropdown (vertical)</h3>
     <div class="its123-container">
         <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-vertical">
             <label for="its123-dropdown" class="its123-label">1. Fietsen, traplopen of stevig wandelen zijn voorbeelden van matig intensief bewegen. Hoeveel dagen in de week beweeg je minimaal 30 minuten matig intensief?</label>
@@ -180,7 +232,7 @@
                 </select>
             </div>
         </fieldset>
-        <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-vertical">
+        <fieldset class="its123-item its123-item-dropdown its123-item-dropdown-vertical its123-error">
             <label for="its123-dropdown" class="its123-label">1. Fietsen, traplopen of stevig wandelen zijn voorbeelden van matig intensief bewegen. Hoeveel dagen in de week beweeg je minimaal 30 minuten matig intensief?</label>
 
             <div class="its123-options">
@@ -199,7 +251,7 @@
         </fieldset>
     </div>
 
-    <h2>Item Likert 5</h2>
+    <h3>Item Likert 5</h3>
     <div class="its123-container">
         <table class="its123-likert">
             <tr class="its123-table-header">
@@ -267,10 +319,38 @@
                     <input type="radio" value="5" class="its123-radio">
                 </td>
             </tr>
+            <tr class="its123-item its123-error">
+                <td>
+                    <span class="its123-counter">2.</span>
+                </td>
+                <td>
+                    <label class="its123-label">I often forget to put things back in their proper place	</label>
+                </td>
+
+                <td>
+                    <input type="radio" value="1" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="2" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="3" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="4" class="its123-radio">
+                </td>
+
+                <td>
+                    <input type="radio" value="5" class="its123-radio">
+                </td>
+            </tr>
         </table>
     </div>
 
-    <h2>Item Likert 4</h2>
+    <h3>Item Likert 4</h3>
     <div class="its123-container">
         <table class="its123-likert">
             <tr class="its123-table-header">
@@ -305,7 +385,7 @@
                     <input type="radio" value="5" class="its123-radio">
                 </td>
             </tr>
-            <tr class="its123-item">
+            <tr class="its123-item its123-error">
                 <td>
                     <span class="its123-counter">2.</span>
                 </td>
@@ -332,7 +412,7 @@
         </table>
     </div>
 
-    <h2>Thumbs</h2>
+    <h3>Thumbs</h3>
 
     <div class="its123-container">
         <svg style="display: none;">
@@ -405,11 +485,73 @@
                 <span class="its123-thumbs-text">People say I have a strong personality</span>
             </div>
         </div>
+        <div class="its123-thumbs its123-error">
+            <div class="its123-thumbs-option">
+
+                <input type="radio" id="thumb0-1" name="thumb0" value="2" />
+                <input type="radio" id="thumb0-2" name="thumb0" value="3" />
+                <input type="radio" id="thumb0-3" name="thumb0" value="1" />
+
+                <label for="thumb0-2" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+
+                <label for="thumb0-3" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+                <span class="its123-thumbs-text">People look up to me</span>
+            </div>
+            <div class="its123-thumbs-option">
+
+                <input type="radio" id="thumb1-1" name="thumb1" value="2" />
+                <input type="radio" id="thumb1-2" name="thumb1" value="3" />
+                <input type="radio" id="thumb1-3" name="thumb1" value="1" />
+
+                <label for="thumb1-2" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+
+                <label for="thumb1-3" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+                <span class="its123-thumbs-text">I tend to be a kind person</span>
+            </div>
+            <div class="its123-thumbs-option">
+
+                <input type="radio" id="thumb2-1" name="thumb2" value="2" />
+                <input type="radio" id="thumb2-2" name="thumb2" value="3" />
+                <input type="radio" id="thumb2-3" name="thumb2" value="1" />
+
+                <label for="thumb2-2" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+
+                <label for="thumb2-3" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+                <span class="its123-thumbs-text">I accept life as it comes</span>
+            </div>
+            <div class="its123-thumbs-option">
+
+                <input type="radio" id="thumb3-1" name="thumb3" value="2" />
+                <input type="radio" id="thumb3-2" name="thumb3" value="3" />
+                <input type="radio" id="thumb3-3" name="thumb3" value="1" />
+
+                <label for="thumb3-2" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+
+                <label for="thumb3-3" class="its123-label">
+                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                </label>
+                <span class="its123-thumbs-text">People say I have a strong personality</span>
+            </div>
+        </div>
     </div>
 
-    <h1>General elements</h1>
+    <h2>General elements</h2>
 
-    <h2>Default loading message</h2>
+    <h3>Default loading message</h3>
     <div class="its123-container">
         <div class="its123-loading-indicator">
             <!-- Custom loading message -->
@@ -417,14 +559,14 @@
         </div>
     </div>
 
-    <h2>Buttons</h2>
+    <h3>Buttons</h3>
     <div class="its123-container">
         <button class="its123-button">Next</button>
         <button class="its123-button" type="submit">Submit</button>
         <button class="its123-button" disabled>Disabled</button>
     </div>
 
-    <h1>Report examples</h1>
+    <h2>Report examples</h2>
 
     <div class="its123-container its123-report">
         <h1>Report title</h1>
