@@ -52,7 +52,11 @@ $state-info-text:    #3a87ad !default;
 $state-info-bg:      #d9edf7 !default;
 $state-info-border:  #bce8f1 !default;
 
-$alert-padding: 5px !default;
+$state-error-text:      #b94a48 !default;
+$state-error-bg:        #f2dede !default;
+$state-error-border:    #eed3d7 !default;
+
+$alert-padding: 5px 15px !default;
 
 // Tables
 $table-bg:  #fff !default;

@@ -1,11 +1,18 @@
 // General information box
-.its123-api-info-box {
-  color: $state-info-text;
-  background-color: $state-info-bg;
-  border: 1px solid $state-info-border;
+.its123-alert {
+
   border-radius: $border-radius;
   padding: $alert-padding;
-}
-.its123-loading-indicator {
-  @extend .its123-api-info-box;
+
+  &.its123-info {
+    color: $state-info-text;
+    background-color: $state-info-bg;
+    border: 1px solid $state-info-border;
+  }
+
+  &.its123-error {
+    color: $state-error-text;
+    border: 1px solid $state-error-border;
+    background-color: $state-error-bg;
+  }
 }
