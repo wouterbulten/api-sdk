@@ -24,6 +24,8 @@ $button-text-color:   #ffffff !default;
 $error-text-color:    #C10000 !default;
 $error-border-color:  transparentize($error-text-color, 0.5) !default;
 
+$color-required:      $error-text-color !default;
+
 // general block level settings
 $border-radius: 3px !default;
 $button-border-radius: 6px !default;
