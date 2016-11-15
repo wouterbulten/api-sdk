@@ -242,3 +242,85 @@ legend.its123-legend {
       font-weight: bold;
   }
 }
+
+// Multi image select
+.its123-multi-image {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+
+    .its123-option {
+        flex-grow: 1;
+        flex-basis: 45%;
+        margin: 1.25%;
+    }
+
+    .its123-radio {
+        display: none;
+    }
+    .its123-image-container {
+        position: relative;
+        display: inline-block;
+    }
+    .its123-image-description {
+        text-align: center;
+        font-weight: bold;
+        color: #5a5a5a;
+        padding-bottom: 5px;
+        height: 45px;
+    }
+    .its123-label {
+        position: absolute;
+    }
+
+    // Option buttons
+    .its123-label-yes, .its123-label-no {
+        font-size: 40px;
+        background-color: rgba(255,255,255,0.5);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid white;
+        transition: font-size 0.1s, position 0.1s, height 0.1s;
+    }
+    .its123-label-yes:hover, .its123-label-no:hover {
+        background-color: white;
+    }
+    .its123-label-yes {
+        left: 10px;
+        top: 55px;
+        color: #17d417;
+    }
+    .its123-label-no {
+        right: 10px;
+        top: 55px;
+        color: #f70303;
+    }
+
+    // State indicator
+    .its123-option input[value="1"]:checked ~ .its123-image-container .its123-label-no,
+    .its123-option input[value="3"]:checked ~ .its123-image-container .its123-label-yes {
+        font-size: 250px;
+        top: 130px;
+        height: 100px;
+        background: none;
+        border: none;
+        z-index: 2;
+        pointer-events: none;
+    }
+    @include media-breakpoint-down(sm) {
+      .its123-option {
+            margin-top: 25px;
+        }
+        .its123-option input[value="1"]:checked ~ .its123-image-container .its123-label-no {
+            font-size: 150px;
+            top: 90px;
+        }
+        .its123-option input[value="3"]:checked ~ .its123-image-container .its123-label-yes {
+            font-size: 150px;
+            top: 85px;
+        }
+    }
+}
