@@ -22,9 +22,8 @@
     border-bottom: 1px solid $table-border-color;
   }
 
-  tr:first-child th {
+  tr:first-child th, tr:first-child td {
     border-top: 1px solid $table-border-color;
-    border-bottom: 2px solid $table-border-color;
   }
   th:last-child, td:last-child {
     border-right: 1px solid $table-border-color;

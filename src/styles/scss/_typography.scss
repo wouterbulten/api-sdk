@@ -4,6 +4,7 @@
 .its123-container {
   h1,h2,h3,h4,h5 {
     color: $color-primary;
+    font-weight: 300;
   }
 
   p {
@@ -20,5 +21,10 @@
   ul, ol {
     padding: 0;
     margin: 0 0 10px 25px;
+  }
+
+  .its123-required {
+    color: $color-required;
+    font-weight: bold;
   }
 }
