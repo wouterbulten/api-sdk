@@ -181,12 +181,34 @@ legend.its123-legend {
 }
 
 // Thumbs
+.its123-thumbs-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+  .its123-thumbs {
+    flex-basis: 100%;
+  }
+
+  @include media-breakpoint-up(md) {
+    .its123-thumbs {
+        flex-basis: 35%;
+    }
+  }
+}
 .its123-thumbs {
 
     border: 1px solid $item-border-color;
     border-radius: 4px;
-    margin: 20px;
-    padding: 20px;
+
+    margin-bottom: 20px;
+    padding: 10px;
+
+    @include media-breakpoint-up(md) {
+      margin: 20px;
+      padding: 20px;
+    }
+
 
     .its123-label {
         display: inline-block;
