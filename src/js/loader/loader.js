@@ -20,8 +20,8 @@ window.loadIts123Api = function (apiDomain, version, callback) {
         s.parentNode.insertBefore(oScript, s);
     };
     if (!modernBrowser) {
-        importScript(apiDomain + 'assets/api/js/' + version + '/its123api.polyfill.min.js', callback);
+        importScript(apiDomain + '/assets/api/js/' + version + '/its123api.polyfill.min.js', callback);
     } else {
-        importScript(apiDomain + 'assets/api/js/' + version + '/its123api.min.js', callback);
+        importScript(apiDomain + '/assets/api/js/' + version + '/its123api.min.js', callback);
     }
 };
