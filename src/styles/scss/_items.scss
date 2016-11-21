@@ -39,7 +39,7 @@ legend.its123-legend {
   }
   .its123-input-text {
     padding-left: 10px;
-    height: 34px;
+    height: 30px;
     @include media-breakpoint-up(md) {
       width: 260px;
     }
@@ -55,6 +55,10 @@ legend.its123-legend {
     select, input {
       border-color: $error-border-color;
     }
+  }
+
+  &:last-child {
+    margin-bottom: 30px;
   }
 }
 
@@ -148,6 +152,7 @@ legend.its123-legend {
 // Likert tables
 .its123-likert {
   max-width: 100%;
+  margin-bottom: 30px;
 
   .its123-counter {
     background-color: lighten($color-secondary, 60%);
@@ -166,7 +171,8 @@ legend.its123-legend {
     font-weight: bold;
 
     hr {
-      background-color: $text-color;
+      height: 1px;
+      background: $text-color
     }
   }
 
