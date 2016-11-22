@@ -153,7 +153,16 @@ legend.its123-legend {
 .its123-likert {
   max-width: 100%;
   margin-bottom: 30px;
+  border-spacing: 0;
 
+  td {
+    padding: 3px;
+    vertical-align: top;
+  }
+
+  .its123-item:hover {
+    background-color: darken($item-bg-color, 8%);
+  }
   .its123-counter {
     background-color: lighten($color-secondary, 60%);
     color: $color-secondary;
@@ -179,6 +188,7 @@ legend.its123-legend {
 
   .its123-label {
     margin-right: 20px;
+    cursor: default;
   }
 
   .its123-radio {
