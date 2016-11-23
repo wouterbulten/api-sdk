@@ -11,7 +11,7 @@
         }
         .its123-container {
             margin: 20px 0px 50px 0px;
-            max-width: 960px;
+            /*max-width: 960px;*/
         }
     </style>
 </head>
@@ -209,6 +209,21 @@
         </fieldset>
 
         <p>Items marked with a <span class="its123-required">*</span> are required.</p>
+    </div>
+
+    <h3>Item typeahead</h3>
+    <div class="its123-item its123-item-typeahead its123-item-hidden its123-item-horizontal" style="margin-bottom: 100px;">
+        <label for="ts123-item-1390" class="its123-label">Wat is your profession?</label>
+
+        <div class="its123-input">
+            <input name="its123-item-1390" id="its123-item-1390" type="text" autocomplete="off" class="its123-input-text" />
+
+            <ul class="its123-typeahead-list" id="its123-job-suggestion-list">
+                <li>Chef</li>
+                <li>Florist</li>
+                <li>Researcher</li>
+            </ul>
+        </div>
     </div>
 
     <h3>Item single select dropdown (vertical)</h3>
@@ -438,128 +453,254 @@
             </symbol>
         </svg>
 
-        <div class="its123-thumbs">
-            <div class="its123-thumbs-option">
+        <div class="its123-thumbs-container">
+            <div class="its123-thumbs">
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb0-1" name="thumb0" value="2" />
-                <input type="radio" id="thumb0-2" name="thumb0" value="3" />
-                <input type="radio" id="thumb0-3" name="thumb0" value="1" />
+                    <input type="radio" id="thumb0-1" name="thumb0" value="2" />
+                    <input type="radio" id="thumb0-2" name="thumb0" value="3" />
+                    <input type="radio" id="thumb0-3" name="thumb0" value="1" />
 
-                <label for="thumb0-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb0-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb0-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">People look up to me</span>
+                    <label for="thumb0-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People look up to me</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb1-1" name="thumb1" value="2" />
+                    <input type="radio" id="thumb1-2" name="thumb1" value="3" />
+                    <input type="radio" id="thumb1-3" name="thumb1" value="1" />
+
+                    <label for="thumb1-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb1-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I tend to be a kind person</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb2-1" name="thumb2" value="2" />
+                    <input type="radio" id="thumb2-2" name="thumb2" value="3" />
+                    <input type="radio" id="thumb2-3" name="thumb2" value="1" />
+
+                    <label for="thumb2-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb2-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I accept life as it comes</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb3-1" name="thumb3" value="2" />
+                    <input type="radio" id="thumb3-2" name="thumb3" value="3" />
+                    <input type="radio" id="thumb3-3" name="thumb3" value="1" />
+
+                    <label for="thumb3-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb3-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People say I have a strong personality</span>
+                </div>
             </div>
-            <div class="its123-thumbs-option">
+            <div class="its123-thumbs its123-error">
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb1-1" name="thumb1" value="2" />
-                <input type="radio" id="thumb1-2" name="thumb1" value="3" />
-                <input type="radio" id="thumb1-3" name="thumb1" value="1" />
+                    <input type="radio" id="thumb4-1" name="thumb0" value="2" />
+                    <input type="radio" id="thumb4-2" name="thumb0" value="3" />
+                    <input type="radio" id="thumb4-3" name="thumb0" value="1" />
 
-                <label for="thumb1-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb4-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb1-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">I tend to be a kind person</span>
+                    <label for="thumb4-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People look up to me</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb5-1" name="thumb1" value="2" />
+                    <input type="radio" id="thumb5-2" name="thumb1" value="3" />
+                    <input type="radio" id="thumb5-3" name="thumb1" value="1" />
+
+                    <label for="thumb5-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb6-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I tend to be a kind person</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb6-1" name="thumb2" value="2" />
+                    <input type="radio" id="thumb6-2" name="thumb2" value="3" />
+                    <input type="radio" id="thumb6-3" name="thumb2" value="1" />
+
+                    <label for="thumb6-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb6-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I accept life as it comes</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb7-1" name="thumb3" value="2" />
+                    <input type="radio" id="thumb7-2" name="thumb3" value="3" />
+                    <input type="radio" id="thumb7-3" name="thumb3" value="1" />
+
+                    <label for="thumb7-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb7-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People say I have a strong personality</span>
+                </div>
             </div>
-            <div class="its123-thumbs-option">
+            <div class="its123-thumbs">
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb2-1" name="thumb2" value="2" />
-                <input type="radio" id="thumb2-2" name="thumb2" value="3" />
-                <input type="radio" id="thumb2-3" name="thumb2" value="1" />
+                    <input type="radio" id="thumb0-1" name="thumb0" value="2" />
+                    <input type="radio" id="thumb0-2" name="thumb0" value="3" />
+                    <input type="radio" id="thumb0-3" name="thumb0" value="1" />
 
-                <label for="thumb2-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb0-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb2-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">I accept life as it comes</span>
+                    <label for="thumb0-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People look up to me</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb1-1" name="thumb1" value="2" />
+                    <input type="radio" id="thumb1-2" name="thumb1" value="3" />
+                    <input type="radio" id="thumb1-3" name="thumb1" value="1" />
+
+                    <label for="thumb1-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb1-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I tend to be a kind person</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb2-1" name="thumb2" value="2" />
+                    <input type="radio" id="thumb2-2" name="thumb2" value="3" />
+                    <input type="radio" id="thumb2-3" name="thumb2" value="1" />
+
+                    <label for="thumb2-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb2-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I accept life as it comes</span>
+                </div>
+                <div class="its123-thumbs-option">
+
+                    <input type="radio" id="thumb3-1" name="thumb3" value="2" />
+                    <input type="radio" id="thumb3-2" name="thumb3" value="3" />
+                    <input type="radio" id="thumb3-3" name="thumb3" value="1" />
+
+                    <label for="thumb3-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+
+                    <label for="thumb3-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People say I have a strong personality</span>
+                </div>
             </div>
-            <div class="its123-thumbs-option">
+            <div class="its123-thumbs its123-error">
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb3-1" name="thumb3" value="2" />
-                <input type="radio" id="thumb3-2" name="thumb3" value="3" />
-                <input type="radio" id="thumb3-3" name="thumb3" value="1" />
+                    <input type="radio" id="thumb4-1" name="thumb0" value="2" />
+                    <input type="radio" id="thumb4-2" name="thumb0" value="3" />
+                    <input type="radio" id="thumb4-3" name="thumb0" value="1" />
 
-                <label for="thumb3-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb4-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb3-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">People say I have a strong personality</span>
-            </div>
-        </div>
-        <div class="its123-thumbs its123-error">
-            <div class="its123-thumbs-option">
+                    <label for="thumb4-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People look up to me</span>
+                </div>
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb4-1" name="thumb0" value="2" />
-                <input type="radio" id="thumb4-2" name="thumb0" value="3" />
-                <input type="radio" id="thumb4-3" name="thumb0" value="1" />
+                    <input type="radio" id="thumb5-1" name="thumb1" value="2" />
+                    <input type="radio" id="thumb5-2" name="thumb1" value="3" />
+                    <input type="radio" id="thumb5-3" name="thumb1" value="1" />
 
-                <label for="thumb4-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb5-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb4-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">People look up to me</span>
-            </div>
-            <div class="its123-thumbs-option">
+                    <label for="thumb6-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I tend to be a kind person</span>
+                </div>
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb5-1" name="thumb1" value="2" />
-                <input type="radio" id="thumb5-2" name="thumb1" value="3" />
-                <input type="radio" id="thumb5-3" name="thumb1" value="1" />
+                    <input type="radio" id="thumb6-1" name="thumb2" value="2" />
+                    <input type="radio" id="thumb6-2" name="thumb2" value="3" />
+                    <input type="radio" id="thumb6-3" name="thumb2" value="1" />
 
-                <label for="thumb5-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb6-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb6-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">I tend to be a kind person</span>
-            </div>
-            <div class="its123-thumbs-option">
+                    <label for="thumb6-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">I accept life as it comes</span>
+                </div>
+                <div class="its123-thumbs-option">
 
-                <input type="radio" id="thumb6-1" name="thumb2" value="2" />
-                <input type="radio" id="thumb6-2" name="thumb2" value="3" />
-                <input type="radio" id="thumb6-3" name="thumb2" value="1" />
+                    <input type="radio" id="thumb7-1" name="thumb3" value="2" />
+                    <input type="radio" id="thumb7-2" name="thumb3" value="3" />
+                    <input type="radio" id="thumb7-3" name="thumb3" value="1" />
 
-                <label for="thumb6-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
+                    <label for="thumb7-2" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
 
-                <label for="thumb6-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">I accept life as it comes</span>
-            </div>
-            <div class="its123-thumbs-option">
-
-                <input type="radio" id="thumb7-1" name="thumb3" value="2" />
-                <input type="radio" id="thumb7-2" name="thumb3" value="3" />
-                <input type="radio" id="thumb7-3" name="thumb3" value="1" />
-
-                <label for="thumb7-2" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-up"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-
-                <label for="thumb7-3" class="its123-label">
-                    <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
-                </label>
-                <span class="its123-thumbs-text">People say I have a strong personality</span>
+                    <label for="thumb7-3" class="its123-label">
+                        <svg class="its123-thumb-icon its123-icon-thumb-down"><use xlink:href="#its123-icon-thumb"></use></svg>
+                    </label>
+                    <span class="its123-thumbs-text">People say I have a strong personality</span>
+                </div>
             </div>
         </div>
     </div>
