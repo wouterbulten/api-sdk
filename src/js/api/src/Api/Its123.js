@@ -27,6 +27,8 @@
  * SOFTWARE.
  */
 
+import request from '../util/request';
+
 /**
  * Default configuration for api, can be overriden by user
  * @type {Object}
@@ -285,7 +287,7 @@ class Its123 {
       headers['X-123test-Respondent'] = user;
     }
 
-    return fetch(`${this.api.endpoint}/product/request-product`, {
+    return request(`${this.api.endpoint}/product/request-product`, {
       method: 'GET',
       mode: 'cors',
       headers,
@@ -295,7 +297,21 @@ class Its123 {
       slots: json.slots,
       reports: json.reports,
       product_access_code: json.product_access_code,
-    }));
+    }))
+    .catch(error => {
+      switch (error.status) {
+        case 401:
+          this.triggerEvent('invalid-api-key', error.response, 'error');
+          break;
+        case 403:
+          this.triggerEvent('product-no-access', error.response, 'error');
+          break;
+        default:
+          // Do nothing
+      }
+
+      throw error;
+    });
   }
 
   /**
@@ -309,7 +325,7 @@ class Its123 {
       'X-123test-ApiKey': this.api.apiKey,
     };
 
-    return fetch(`${this.api.endpoint}/product/${accessCode}/overview`, {
+    return request(`${this.api.endpoint}/product/${accessCode}/overview`, {
       method: 'GET',
       mode: 'cors',
       headers,
@@ -330,7 +346,7 @@ class Its123 {
    * @return {Promise}
    */
   requestInstrument(accessCode) {
-    return fetch(`${this.api.endpoint}/instrument/next-items`, {
+    return request(`${this.api.endpoint}/instrument/next-items`, {
       method: 'GET',
       cache: 'no-cache',
       headers: {
@@ -379,7 +395,7 @@ class Its123 {
    * @return {Promise}
    */
   submitInstrumentData(accessCode, form) {
-    return fetch(`${this.api.endpoint}/instrument/next-items`, {
+    return request(`${this.api.endpoint}/instrument/next-items`, {
       method: 'POST',
       cache: 'no-cache',
       body: new FormData(form),
@@ -504,7 +520,7 @@ class Its123 {
       url = `${this.api.endpoint}/report/${accessCode}?meta=${metaData}&meta_hmac=${metaHmac}`;
     }
 
-    return fetch(url, {
+    return request(url, {
       headers: {
         'X-123test-ApiKey': this.api.apiKey,
       },
@@ -635,7 +651,7 @@ class Its123 {
   /**
    * Log an exception and retrow
    * @param  {Object} e The error
-   * @return {Object}   the error
+   * @return null
    */
   handleException(e) {
     if (this.api.logErrors) {
@@ -643,7 +659,29 @@ class Its123 {
         Bugsnag.notifyException(e, 'API its123api');
       }
     }
-    throw e;
+
+    // Trigger that a unhandled exception has occurred
+    this.triggerEvent('error', e, 'error');
+
+    switch (e.status) {
+      case 401:
+      case 403:
+        console.error(`123test API Permission error: ${e.message} (${e.status})`);
+        break;
+      case 404:
+        console.error(`123test API Product error: ${e.message} (${e.status})`);
+        break;
+      case 408:
+        console.error('123test API Server error: API is unavailable');
+        this.triggerEvent('api-unavailable', e, 'error');
+        break;
+      case 500:
+        console.error(`123test API Server error: ${e.message} (${e.status})`);
+        break;
+      default:
+        // Unknown error
+        throw e;
+    }
   }
 
   /**
@@ -684,9 +722,10 @@ class Its123 {
    * Send a new event to the listeners
    * @param  {String} eventName Name of the event
    * @param  {Object} data      Optional event data
+   * @param  {String} type      Event type
    * @return {void}
    */
-  triggerEvent(eventName, data) {
+  triggerEvent(eventName, data, type = 'info') {
     const listeners = this.eventListeners[eventName];
 
     if (listeners && listeners.length > 0) {
@@ -694,7 +733,14 @@ class Its123 {
     }
 
     if (this.api.environment === 'development') {
-      console.info(`Event triggered: ${eventName}`);
+      switch (type) {
+        case 'error':
+          console.error(`Event triggered: ${eventName}`);
+          break;
+        case 'info':
+        default:
+          console.info(`Event triggered: ${eventName}`);
+      }
     }
   }
 

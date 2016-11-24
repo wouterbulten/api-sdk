@@ -19,11 +19,20 @@
             margin: 0 auto;
             max-width: 920px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="its123-container">
+    <div class="its123-alert its123-error hidden" id="its123-error">
+        Error occurred
+    </div>
+    <div class="its123-alert its123-error hidden" id="its123-unavailable">
+        API unavailable
+    </div>
     <div class="its123-alert its123-info its123-loading-indicator" id="its123api-loading">
         <p>Loading..</p>
     </div>
@@ -42,7 +51,13 @@
         apiKey: apiKey
     });
 
-    api.loadProduct('jung-en_us-1');
+    api.on('error', function() {
+        document.getElementById('its123-error').classList.remove('hidden');
+    });
+    api.on('api-unavailable', function() {
+        document.getElementById('its123-unavailable').classList.remove('hidden');
+    });
+    api.loadProduct('competentietest-nl_nl-1');
 </script>
 </body>
 </html>
