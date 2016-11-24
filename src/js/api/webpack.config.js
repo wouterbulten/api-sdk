@@ -1,7 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const outputDir = path.resolve(__dirname, '../../../dist/js');
+const isDist = (process.env.WEBPACK_OUTPUT === 'dist');
+
+const outputDir = path.resolve(__dirname, (
+  (isDist) ? '../../../dist/js' : 'build')
+);
 
 module.exports = {
   // Start point of the app
@@ -16,7 +20,7 @@ module.exports = {
   // Output path after webpack has run
   output: {
     path: outputDir,
-    filename: '[name].min.js',
+    filename: (isDist) ? '[name].min.js' : '[name].js',
   },
 
   module: {
@@ -40,7 +44,7 @@ module.exports = {
     ],
   },
 
-  plugins: [
+  plugins: (isDist) ? [
     // Optimize the output bundle by minifying
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -55,5 +59,5 @@ module.exports = {
     }),
     // Remove any duplicate code
     new webpack.optimize.DedupePlugin(),
-  ],
+  ] : [],
 };

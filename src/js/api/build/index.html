@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>123test API example</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <link href="//cdn.123test.com/assets/api/styles/latest/themes/123test.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="its123api.js"></script>
+
+    <!-- api-key.js is not included in this repo -->
+    <!-- To make it work, create a file in the build directory -->
+    <!-- The file should two variables: var apiKey = <your api key>; var domain = < api domain >; -->
+    <script type="text/javascript" src="api-key.js"></script>
+    <style type="text/css">
+        /* Optional css to center the test */
+        .its123-container {
+            margin: 0 auto;
+            max-width: 920px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="its123-container">
+    <div class="its123-alert its123-info its123-loading-indicator" id="its123api-loading">
+        <p>Loading..</p>
+    </div>
+
+    <div id="its123api-product">
+    </div>
+
+    <div id="its123api-report">
+    </div>
+</div>
+
+<script type='text/javascript'>
+
+    var api = new Its123({
+        domain: domain,
+        apiKey: apiKey
+    });
+
+    api.loadProduct('jung-en_us-1');
+</script>
+</body>
+</html>

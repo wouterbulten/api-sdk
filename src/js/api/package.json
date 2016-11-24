@@ -1,8 +1,10 @@
 {
-  "name": "Its123ApiJS",
+  "name": "its123-api-js-sdk",
   "version": "1.0.0",
   "scripts": {
-    "build": "cross-env WEBPACK_OUTPUT=dist webpack --config webpack.config.js --progress --colors"
+    "build": "cross-env WEBPACK_OUTPUT=dist webpack --config webpack.config.js --progress --colors",
+    "watch": "cross-env WEBPACK_OUTPUT=dev webpack --config webpack.config.js --progress --colors --watch",
+    "server": "browser-sync start --server 'build' --files 'build'"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",
