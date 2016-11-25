@@ -48,10 +48,10 @@
 
     var api = new Its123({
         domain: domain,
-        apiKey: apiKey
+        apiKey: apiKey,
     });
 
-    api.on('error', function() {
+    api.on('error', function(error) {
         document.getElementById('its123-error').classList.remove('hidden');
     });
     api.on('api-unavailable', function() {

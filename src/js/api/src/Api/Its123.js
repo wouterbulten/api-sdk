@@ -39,9 +39,8 @@ const defaultApiConfig = {
   version: 'v2',
 
   // Environment config
-  logErrors: false,
+  logErrors: true,
   environment: 'production',
-  bugSnagApiKey: '',
 
   // DOM config
   elements: {
@@ -95,11 +94,6 @@ class Its123 {
       throw new Error(
         'Element for loading, product or report not found. Please check your HTML and Api config.'
       );
-    }
-
-    // Insert BugSnag error reporting
-    if (this.api.logErrors) {
-      this.insertLogScript();
     }
 
     // Placeholder for eventlisteners
@@ -655,49 +649,29 @@ class Its123 {
    */
   handleException(e) {
     if (this.api.logErrors) {
-      if (typeof Bugsnag === 'function') {
-        Bugsnag.notifyException(e, 'API its123api');
+      switch (e.status) {
+        case 401:
+        case 403:
+          console.error(`123test API Permission error: ${e.message} (${e.status})`);
+          break;
+        case 404:
+          console.error(`123test API Product error: ${e.message} (${e.status})`);
+          break;
+        case 408:
+          console.error('123test API Server error: API is unavailable');
+          this.triggerEvent('api-unavailable', e, 'error');
+          break;
+        case 500:
+          console.error(`123test API Server error: ${e.message} (${e.status})`);
+          break;
+        default:
+          // Unknown error
+          throw e;
       }
     }
 
     // Trigger that a unhandled exception has occurred
     this.triggerEvent('error', e, 'error');
-
-    switch (e.status) {
-      case 401:
-      case 403:
-        console.error(`123test API Permission error: ${e.message} (${e.status})`);
-        break;
-      case 404:
-        console.error(`123test API Product error: ${e.message} (${e.status})`);
-        break;
-      case 408:
-        console.error('123test API Server error: API is unavailable');
-        this.triggerEvent('api-unavailable', e, 'error');
-        break;
-      case 500:
-        console.error(`123test API Server error: ${e.message} (${e.status})`);
-        break;
-      default:
-        // Unknown error
-        throw e;
-    }
-  }
-
-  /**
-   * Insert a log script in to the dom
-   * @return void
-   */
-  insertLogScript() {
-    const head = document.getElementsByTagName('head')[0];
-    const script = document.createElement('script');
-    script.src = `${this.api.domain}/logIts123.js`;
-    script.onload = () => {
-      /* global Bugsnag */
-      Bugsnag.apiKey = this.api.bugSnagApiKey;
-      Bugsnag.releaseStage = this.api.environment;
-    };
-    head.appendChild(script);
   }
 
   /**
