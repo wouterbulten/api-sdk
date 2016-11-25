@@ -7,6 +7,8 @@ Legacy build for older browsers, includes polyfills
 import 'core-js/es6/promise';
 // Import polyfill for object functions
 import 'core-js/es6/object';
+// Import polyfill for string functions
+import 'core-js/fn/string/starts-with';
 // Import polyfill for fetch
 import 'whatwg-fetch';
 

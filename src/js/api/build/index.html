@@ -27,12 +27,21 @@
 <body>
 
 <div class="its123-container">
+
+    <!-- Alert and info messages -->
     <div class="its123-alert its123-error hidden" id="its123-error">
-        Error occurred
+        <p>An unexpected error occurred. We are sorry for the inconvenience. Please try to reload the page.</p>
     </div>
     <div class="its123-alert its123-error hidden" id="its123-unavailable">
-        API unavailable
+        <p>The 123test API is currently unavailable</p>
     </div>
+    <div class="its123-alert its123-info hidden" id="its123-item-data-loaded">
+        <p>You've already filled out part of this test. You can continue where you left off or click the button below if you’d rather start over.</p>
+
+        <button class="its123-button" id="its123-start-over">Start over</button>
+    </div>
+
+
     <div class="its123-alert its123-info its123-loading-indicator" id="its123api-loading">
         <p>Loading..</p>
     </div>
@@ -46,18 +55,34 @@
 
 <script type='text/javascript'>
 
-    var api = new Its123({
-        domain: domain,
-        apiKey: apiKey,
-    });
+    function loadApi(product) {
 
-    api.on('error', function(error) {
-        document.getElementById('its123-error').classList.remove('hidden');
-    });
-    api.on('api-unavailable', function() {
-        document.getElementById('its123-unavailable').classList.remove('hidden');
-    });
-    api.loadProduct('competentietest-nl_nl-1');
+        var api = new Its123({
+            domain: domain,
+            apiKey: apiKey,
+        });
+
+        api.on('error', function(error) {
+            document.getElementById('its123-error').classList.remove('hidden');
+        });
+        api.on('api-unavailable', function() {
+            document.getElementById('its123-unavailable').classList.remove('hidden');
+        });
+        api.on(['instrument-already-completed', 'instrument-item-data-loaded'], function() {
+            document.getElementById('its123-item-data-loaded').classList.remove('hidden');
+        });
+
+        document.getElementById('its123-start-over').addEventListener('click', function() {
+            document.getElementById('its123-item-data-loaded').classList.add('hidden');
+            api.clearStorage(product);
+            api.loadProduct(product);
+        });
+
+        api.loadProduct(product);
+    }
+
+    loadApi('jung-en_us-1');
+
 </script>
 </body>
 </html>

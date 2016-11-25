@@ -28,6 +28,12 @@
  */
 
 import request from '../util/request';
+import {
+  saveToStorage,
+  getFromStorage,
+  removeFromStorage,
+  removeFromStorageByPrefix,
+} from '../util/storage';
 
 /**
  * Default configuration for api, can be overriden by user
@@ -132,6 +138,10 @@ class Its123 {
     let product = {};
     let promise;
 
+    // Show loading div
+    this.api.elements.productElement.style.display = 'none';
+    this.api.elements.loadingElement.style.display = 'block';
+
     if (storage) {
       // Try to load product information from local storage, if it fails
       // fall back to a API request
@@ -185,7 +195,7 @@ class Its123 {
           .then(() => this.requestInstrument(accessCode))
           .then((result) => {
             this.triggerEvent('instrument-started', { accessCode, status: result.status });
-            return this.processApiInstrumentResponse(accessCode, result);
+            return this.processApiInstrumentResponse(accessCode, result, storage);
           })
       ), Promise.resolve());
     });
@@ -198,7 +208,7 @@ class Its123 {
     // Return initial promise and make sure that returning the product is the last step in the chain
     return promise
       // Remove this session from the local storage
-      .then(() => this.clearStorage(productId, product.slots.instruments))
+      .then(() => this.clearStorage(productId))
       // Trigger event and pass product info
       .then(() => this.triggerEvent('product-completed', product))
       .then(() => product)
@@ -237,16 +247,27 @@ class Its123 {
    * @param  {String} status     Current instrument status
    * @param  {Array} resources  Resources to load
    * @param  {String} body       Html to put in the DOM
+   * @param  {Boolean} storage   Whether to load instrument input data from local storage
    * @return {Promise}
    */
-  processApiInstrumentResponse(accessCode, { status, resources, body }) {
+  processApiInstrumentResponse(accessCode, { status, resources, body }, storage) {
+    let promise;
+
     switch (status) {
       case 'started':
       case 'in-progress':
         this.updateInstrumentInStorage(accessCode, status);
-        return this.loadResources(resources)
-          .then(() => this.renderInstrument(body))
-          .then(() => this.runResourceFunctions(resources))
+
+        promise = this.loadResources(resources)
+          .then(() => this.renderInstrument(body));
+
+        // Try to load item data from local storage when enabled
+        if (storage) {
+          promise = promise.then(() => this.loadInstrumentStateFromStorage(accessCode))
+          .then(() => this.bindInstrumentStorageListeners(accessCode));
+        }
+
+        return promise.then(() => this.runResourceFunctions(resources))
           .then(() => this.waitForInstrumentToSubmit())
           .then(({ form }) => this.submitInstrumentData(accessCode, form))
           // Run function again until instrument has ended
@@ -419,6 +440,49 @@ class Its123 {
   }
 
   /**
+   * Add event listeners to radio buttons in instruments
+   * @param  {String} accessCode Access code of the instrument
+   * @return {null}
+   */
+  bindInstrumentStorageListeners(accessCode) {
+    const elements = this.api.elements.productElement.getElementsByTagName('input');
+
+    for (let e = 0; e < elements.length; e++) {
+      const input = elements[e];
+
+      if (input.type === 'radio') {
+        input.addEventListener('change', () => {
+          saveToStorage(`${accessCode}-${input.name}`, input.value);
+        });
+      }
+    }
+  }
+
+  /**
+   * Apply stored instrument state to the DOM
+   * @param  {String} accessCode Access code of instrument
+   * @return {null}
+   */
+  loadInstrumentStateFromStorage(accessCode) {
+    const elements = this.api.elements.productElement.getElementsByTagName('input');
+
+    let loaded = false;
+    for (let e = 0; e < elements.length; e++) {
+      const input = elements[e];
+      const value = getFromStorage(`${accessCode}-${input.name}`);
+
+      if (value !== null && input.type === 'radio' && input.value === value) {
+        input.checked = true;
+        loaded = true;
+      }
+    }
+
+    if (loaded) {
+      this.triggerEvent('instrument-item-data-loaded', { access_code: accessCode });
+    }
+  }
+
+  /**
    * Render a report to the DOM
    *
    * @param  {String} body report body
@@ -548,13 +612,6 @@ class Its123 {
    * @return {void}
    */
   storeInStorage(productId, product, user) {
-    const store = window.localStorage;
-
-    // Check browser support
-    if (!store) {
-      return;
-    }
-
     // Add new record
     const productData = {
       ...product,
@@ -562,7 +619,7 @@ class Its123 {
       started: Date.now(),
     };
 
-    store.setItem(`its123Api-${productId}`, JSON.stringify(productData));
+    saveToStorage(`its123Api-${productId}`, JSON.stringify(productData));
   }
 
   /**
@@ -576,15 +633,14 @@ class Its123 {
    */
   loadFromStorage(productId, user = '', expirationTime = 3600) {
     return new Promise((resolve, reject) => {
-      const store = window.localStorage;
-      const item = `its123Api-${productId}`;
+      const item = getFromStorage(`its123Api-${productId}`);
 
       // Check browser support and presence of object
-      if (!store || !store.getItem(item)) {
-        reject('No support or storage present');
+      if (!item) {
+        reject('No storage present');
       }
 
-      const product = JSON.parse(store.getItem(item));
+      const product = JSON.parse(item);
 
       if (product && (product.started + (expirationTime * 1000)) > Date.now()
         && product.user === user) {
@@ -597,18 +653,22 @@ class Its123 {
   }
 
   /**
-   * Clear the local storage of all items
+   * Clear the local storage of all items associatd with a product id
    * @return {void}
    */
-  clearStorage(productId, instruments = []) {
-    const store = window.localStorage;
+  clearStorage(productId) {
+    const productJson = getFromStorage(`its123Api-${productId}`);
 
-    if (!store) {
+    if (!productJson) {
       return;
     }
 
-    store.removeItem(`its123Api-${productId}`);
-    instruments.forEach(i => store.removeItem(`its123Api-${i.access_code}`));
+    const product = JSON.parse(productJson);
+    product.slots.instruments.forEach(i => {
+      removeFromStorage(`its123Api-${i.access_code}`);
+      removeFromStorageByPrefix(i.access_code);
+    });
+    removeFromStorage(`its123Api-${productId}`);
   }
 
   /**
@@ -618,13 +678,7 @@ class Its123 {
    * @return {void}
    */
   updateInstrumentInStorage(accessCode, status) {
-    const store = window.localStorage;
-
-    if (!store) {
-      return;
-    }
-
-    store.setItem(`its123Api-${accessCode}`, status);
+    saveToStorage(`its123Api-${accessCode}`, status);
   }
 
   /**
@@ -633,13 +687,7 @@ class Its123 {
    * @return {String|null} Status
    */
   getInstrumentStatusFromStorage(accessCode) {
-    const store = window.localStorage;
-
-    if (!store) {
-      return null;
-    }
-
-    return store.getItem(`its123Api-${accessCode}`);
+    return getFromStorage(`its123Api-${accessCode}`);
   }
 
   /**
@@ -720,16 +768,26 @@ class Its123 {
 
   /**
    * Register a new event listener
-   * @param  {String}   eventName Name of the event
+   * @param  {String|Array}   eventName Name of the event
    * @param  {Function} callback
    * @return {void}
    */
   on(eventName, callback) {
-    if (!this.eventListeners[eventName]) {
-      this.eventListeners[eventName] = [];
+    let events = [];
+
+    if (Array.isArray(eventName)) {
+      events = eventName;
+    } else {
+      events.push(eventName);
     }
 
-    this.eventListeners[eventName].push(callback);
+    events.forEach(event => {
+      if (!this.eventListeners[event]) {
+        this.eventListeners[event] = [];
+      }
+
+      this.eventListeners[event].push(callback);
+    });
   }
 }
 
