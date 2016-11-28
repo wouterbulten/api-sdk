@@ -1,3 +1,5 @@
+import { timeoutPromise } from './promise';
+
 /**
  * Checks if a network request came back fine, and throws an error if not
  *
@@ -15,35 +17,6 @@ function checkStatus(response) {
   error.status = response.status;
 
   throw error;
-}
-
-/**
- * Promise with timeout function
- * @param  {Number} ms      Miliseconds to wait before promise is rejected
- * @param  {Promise} promise The promise to run
- * @return {Promise}         Promise with timeout
- */
-function timeoutPromise(ms, promise) {
-  return new Promise((resolve, reject) => {
-    // Create timer that rejects promise after ms miliseconds
-    const timeoutId = setTimeout(() => {
-      const error = new Error('timeout');
-      error.status = 408;
-      reject(error);
-    }, ms);
-
-    // Clear timeout if promise resolves/rejects on its own
-    promise.then(
-      (res) => {
-        clearTimeout(timeoutId);
-        resolve(res);
-      },
-      (err) => {
-        clearTimeout(timeoutId);
-        reject(err);
-      }
-    );
-  });
 }
 
 /**

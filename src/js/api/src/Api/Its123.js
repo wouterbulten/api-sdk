@@ -28,6 +28,9 @@
  */
 
 import request from '../util/request';
+
+import { tryAtMost } from '../util/promise';
+
 import {
   saveToStorage,
   getFromStorage,
@@ -58,6 +61,11 @@ const defaultApiConfig = {
     productElement: null,
     reportElement: null,
   },
+
+  // Number of retries some fetch request may make
+  maxRetries: 2,
+  // Initial delay before a retry
+  retryDelay: 5000,
 
   apiKey: 'not-set',
 };
@@ -269,7 +277,10 @@ class Its123 {
 
         return promise.then(() => this.runResourceFunctions(resources))
           .then(() => this.waitForInstrumentToSubmit())
-          .then(({ form }) => this.submitInstrumentData(accessCode, form))
+          .then(({ form }) =>
+            tryAtMost(this.api.maxRetries, this.api.retryDelay, () =>
+             this.submitInstrumentData(accessCode, form))
+          )
           // Run function again until instrument has ended
           .then((result) => this.processApiInstrumentResponse(accessCode, result));
       case 'ended-items':
@@ -585,23 +596,7 @@ class Its123 {
       method: 'GET',
       mode: 'cors',
     })
-      .then((response) => this.checkReponseStatus(response))
       .then((response) => response.text());
-  }
-
-  /**
-   * Validate API response
-   * @param  {Object} response Response object
-   * @return {Object}
-   */
-  checkReponseStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    }
-
-    const error = new Error(`${response.statusText} ${response.url}`);
-    error.response = response;
-    throw error;
   }
 
   /**
