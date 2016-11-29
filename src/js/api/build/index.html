@@ -49,6 +49,10 @@
     <div id="its123api-product">
     </div>
 
+    <div class="its123-alert its123-error hidden" id="its123-submit-failed">
+        <p>An error occurred when submitting your test data. Please check your internet connection and try again in a few minutes.</p>
+    </div>
+
     <div id="its123api-report">
     </div>
 </div>
@@ -68,6 +72,9 @@
         api.on('api-unavailable', function() {
             document.getElementById('its123-unavailable').classList.remove('hidden');
         });
+        api.on('instrument-submit-failed', function() {
+            document.getElementById('its123-submit-failed').classList.remove('hidden');
+        });
         api.on(['instrument-already-completed', 'instrument-item-data-loaded'], function() {
             document.getElementById('its123-item-data-loaded').classList.remove('hidden');
         });
@@ -84,5 +91,7 @@
     loadApi('jung-en_us-1');
 
 </script>
+<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+
 </body>
 </html>

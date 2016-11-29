@@ -29,7 +29,7 @@
 
 import request from '../util/request';
 
-import { tryAtMost } from '../util/promise';
+import { tryAtMost, retryUntilResolved } from '../util/promise';
 
 import {
   saveToStorage,
@@ -276,10 +276,16 @@ class Its123 {
         }
 
         return promise.then(() => this.runResourceFunctions(resources))
-          .then(() => this.waitForInstrumentToSubmit())
-          .then(({ form }) =>
-            tryAtMost(this.api.maxRetries, this.api.retryDelay, () =>
-             this.submitInstrumentData(accessCode, form))
+          .then(() => retryUntilResolved(() => this.waitForInstrumentToSubmit()
+            .then(({ form }) =>
+              tryAtMost(this.api.maxRetries, this.api.retryDelay, () =>
+                this.submitInstrumentData(accessCode, form))
+              )
+              .catch((error) => {
+                this.triggerEvent('instrument-submit-failed', null, 'error');
+                throw error; // Re-trow error to bubble up
+              })
+            )
           )
           // Run function again until instrument has ended
           .then((result) => this.processApiInstrumentResponse(accessCode, result));
@@ -397,18 +403,26 @@ class Its123 {
    * @return {Promise}
    */
   waitForInstrumentToSubmit() {
+    const className = 'its123-disabled-loading';
     const form = document.querySelector(this.api.elements.instrumentFormSelector);
+    const button = form.querySelector('button[type=submit]');
+
+    // Re-enable button if it was previously disabled by this function
+    if (button.classList.contains(className)) {
+      button.disabled = false;
+      button.classList.remove(className);
+    }
 
     // Return a new promise that resolves when the submit button is clicked
     return new Promise((resolve) => {
       form.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        // Disable all buttons in the form
-        const buttons = event.target.getElementsByTagName('button');
-        for (let b = 0; b < buttons.length; b++) {
-          buttons[b].disabled = true;
-        }
+        // Disable submit button and add class so that we know that
+        // the api js disabled the button (and not individual instrument js)
+        button.disabled = true;
+        button.classList.add(className);
+
         resolve({ form, event });
       });
     });

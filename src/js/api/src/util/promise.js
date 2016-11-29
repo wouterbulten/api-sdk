@@ -51,3 +51,10 @@ export function tryAtMost(maxRetries, timeout, fn, timeoutFactor = 4, current = 
     })
   );
 }
+
+export function retryUntilResolved(fn) {
+  return new Promise((resolve) => fn()
+    .then(resolve)
+    .catch(() => resolve(retryUntilResolved(fn)))
+  );
+}
