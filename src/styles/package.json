@@ -8,7 +8,7 @@
     "minify": "node-sass scss --output-style compressed --output ../../dist/css && postcss --no-map.inline --use autoprefixer --replace ../../dist/css/themes/*.css",
     "watch": "node-sass --watch scss --output css",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bs": "browser-sync start --server --files='index.html,css/**/*.css'"
+    "server": "browser-sync start --server --files='index.html,css/**/*.css'"
   },
   "repository": {
     "type": "git",

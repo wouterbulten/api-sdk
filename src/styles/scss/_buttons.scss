@@ -41,3 +41,35 @@
     box-shadow: none;
   }
 }
+
+.its123-loading-spinner {
+  // Spinner adapted from https://github.com/tobiasahlin/SpinKit
+  margin: 0 auto;
+  text-align: center;
+
+  & > div {
+    width: 13px;
+    height: 13px;
+    margin: 0 2px 0 2px;
+    background-color: white;
+
+    display: inline-block;
+    animation: its123-spinner-delay 1.4s infinite ease-in-out both;
+  }
+
+  & div:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+
+  div:nth-child(2){
+    animation-delay: -0.16s;
+  }
+}
+
+@keyframes its123-spinner-delay {
+  0%, 80%, 100% {
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+  }
+}

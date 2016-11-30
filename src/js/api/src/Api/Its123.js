@@ -404,12 +404,15 @@ class Its123 {
    */
   waitForInstrumentToSubmit() {
     const className = 'its123-disabled-loading';
+    const loadingIcon = '<div class="its123-loading-spinner"><div></div><div></div><div></div></div>';
     const form = document.querySelector(this.api.elements.instrumentFormSelector);
     const button = form.querySelector('button[type=submit]');
 
     // Re-enable button if it was previously disabled by this function
     if (button.classList.contains(className)) {
       button.disabled = false;
+      button.innerHTML = (button.getAttribute('data-label')) ?
+        button.getAttribute('data-label') : button.innerText;
       button.classList.remove(className);
     }
 
@@ -422,6 +425,9 @@ class Its123 {
         // the api js disabled the button (and not individual instrument js)
         button.disabled = true;
         button.classList.add(className);
+        // Save content to an attribute to reset it later
+        button.setAttribute('data-label', button.innerText);
+        button.innerHTML = loadingIcon;
 
         resolve({ form, event });
       });
@@ -435,6 +441,8 @@ class Its123 {
    * @return {Promise}
    */
   submitInstrumentData(accessCode, form) {
+    this.triggerEvent('instrument-submitting', accessCode);
+
     return request(`${this.api.endpoint}/instrument/next-items`, {
       method: 'POST',
       cache: 'no-cache',

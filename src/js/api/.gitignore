@@ -2,3 +2,4 @@ node_modules
 *.log
 build/*
 !build/index.html
+!build/css

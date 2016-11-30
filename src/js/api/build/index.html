@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 
-    <link href="//cdn.123test.com/assets/api/styles/latest/themes/123test.css" type="text/css" rel="stylesheet">
+    <link href="css/123test.css" type="text/css" rel="stylesheet">
 
     <script type="text/javascript" src="its123api.js"></script>
 
@@ -75,6 +75,10 @@
         api.on('instrument-submit-failed', function() {
             document.getElementById('its123-submit-failed').classList.remove('hidden');
         });
+        api.on('instrument-submitting', function() {
+            document.getElementById('its123-submit-failed').classList.add('hidden');
+        });
+
         api.on(['instrument-already-completed', 'instrument-item-data-loaded'], function() {
             document.getElementById('its123-item-data-loaded').classList.remove('hidden');
         });
