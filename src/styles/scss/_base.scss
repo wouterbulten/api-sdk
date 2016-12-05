@@ -14,11 +14,13 @@
 // General elements
 @import "_typography";
 @import "_alerts";
-@import "_items";
 @import "_icons";
 @import "_tables";
 @import "_buttons";
 @import "_images";
+
+// Load items last to overwrite base styles
+@import "_items";
 
 .its123-container {
   font-family: $font-family;

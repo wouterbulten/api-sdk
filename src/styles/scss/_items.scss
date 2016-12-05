@@ -156,8 +156,12 @@ legend.its123-legend {
   border-spacing: 0;
 
   td {
-    padding: 3px;
+    padding: 3px 3px 15px 3px;
     vertical-align: top;
+
+    @include media-breakpoint-up(md) {
+      padding-bottom: 3px;
+    }
   }
 
   .its123-item:hover {
@@ -173,7 +177,9 @@ legend.its123-legend {
     height: 18px;
     display: inline-block;
     text-align: center;
-    margin-right: 10px;
+    @include media-breakpoint-up(md) {
+      margin-right: 10px;
+    }
   }
   .its123-table-header {
     text-align: center;
@@ -187,7 +193,10 @@ legend.its123-legend {
   }
 
   .its123-label {
-    margin-right: 20px;
+    margin-right: 10px;
+    @include media-breakpoint-up(md) {
+      margin-right: 20px;
+    }
     cursor: default;
   }
 

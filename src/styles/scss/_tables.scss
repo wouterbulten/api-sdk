@@ -1,11 +1,21 @@
 // Table styles
 //
 
-.its123-table {
-  width: 100%;
+.its123-table, .its123-likert {
+  display: table;
 
-  td, th {
-    padding: 12px;
+  // Set display properties to their correct values
+  tr       { display: table-row }
+  thead    { display: table-header-group }
+  tbody    { display: table-row-group }
+  tfoot    { display: table-footer-group }
+  col      { display: table-column }
+  colgroup { display: table-column-group }
+  td, th   { display: table-cell }
+  caption  { display: table-caption }
+
+  th, td {
+    padding: 5px 10px;
   }
   th {
     font-weight: bold;
