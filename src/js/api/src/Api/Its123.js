@@ -65,9 +65,11 @@ const defaultApiConfig = {
   },
 
   // Number of retries some fetch request may make
-  maxRetries: 2,
+  maxHttpRetries: 2,
   // Initial delay before a retry
   retryDelay: 5000,
+  // Number of times a user can try to resubmit a form
+  maxSubmitRetries: 10,
 
   apiKey: 'not-set',
 };
@@ -108,7 +110,7 @@ class Its123 {
     if (!this.api.elements.loadingElement
       || !this.api.elements.productElement || !this.api.elements.reportElement) {
       throw new Error(
-        'Element for loading, product or report not found. Please check your HTML and Api config.'
+        'Element for loading, product or report not found. Please check your HTML and Api config.',
       );
     }
 
@@ -117,7 +119,30 @@ class Its123 {
   }
 
   /**
-   * Load a product
+   * Wrapper around loadAndRunProduct with error handling
+   *
+   * @param  {String} productId product to load
+   * @param  {Object} [config={}] Product configuration, see loadAndRunProduct
+   * @return {Promise}
+   * @see loadAndRunProduct()
+   */
+  async loadProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
+    try {
+      return await this.loadAndRunProduct(productId, { renderReport, storage, user });
+    } catch (error) {
+      if (storage) {
+        // Something could be wrong with our local store,
+        // clear it to prevent any future errors
+        this.clearStorage(productId);
+      }
+      this.handleException(error);
+    }
+
+    return {};
+  }
+
+  /**
+   * Load and run a product
    *
    * Runs all the required sub steps from instrument to report. All promises are chained
    * and the final promise returns the product data when resolved.
@@ -144,7 +169,7 @@ class Its123 {
    * @param  {String}  [user=''] Optional user UUID
    * @return {Promise}
    */
-  async loadProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
+  async loadAndRunProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
     let product = null;
 
     // Show loading div
@@ -210,17 +235,7 @@ class Its123 {
     this.clearStorage(productId);
     // Trigger event and pass product info
     this.triggerEvent('product-completed', product);
-    /*
-      .then(() => product)
-      // Also add a catch, this removes the need of having individual catches for every fetch
-      .catch((e) => {
-        if (storage) {
-          // Something could be wrong with our local store,
-          // clear it to prevent any future errors
-          this.clearStorage(productId);
-        }
-        return this.handleException(e);
-      });*/
+
     return product;
   }
 
@@ -255,7 +270,7 @@ class Its123 {
   async processApiInstrumentResponse(accessCode, { status, resources, body }, storage) {
     switch (status) {
       case 'started':
-      case 'in-progress':
+      case 'in-progress': // eslint-disable-line no-case-declarations
         this.updateInstrumentInStorage(accessCode, status);
 
         // Wait for resources to load
@@ -271,20 +286,26 @@ class Its123 {
 
         this.runResourceFunctions(resources);
 
-        while (true) {
-          const form = await this.waitForInstrumentToSubmit();
+        let lastError = null;
+        for (let i = 0; i < this.api.maxSubmitRetries; i += 1) {
+          const { form } = await this.waitForInstrumentToSubmit();
 
           try {
-            const result = await tryAtMost(this.api.maxRetries, this.api.retryDelay, () =>
+            const result = await tryAtMost(this.api.maxHttpRetries, this.api.retryDelay, () =>
               this.submitInstrumentData(accessCode, form),
             );
             // Run function again until instrument has ended
             return await this.processApiInstrumentResponse(accessCode, result);
           } catch (error) {
             this.triggerEvent('instrument-submit-failed', null, 'error');
-            throw error; // Re-trow error to bubble up
+
+            // Save error for later, we first let the user retry
+            lastError = error;
           }
         }
+        // Failed after max attempts, throw last error
+        throw lastError;
+
       case 'ended-items':
       case 'ended-skipped':
       case 'ended-time':
@@ -426,7 +447,9 @@ class Its123 {
         button.disabled = true;
         button.classList.add(className);
         // Save content to an attribute to reset it later
-        button.setAttribute('data-label', button.innerText);
+        if (!button.getAttribute('data-label')) {
+          button.setAttribute('data-label', button.innerText);
+        }
         button.innerHTML = loadingIcon;
 
         resolve({ form, event });
@@ -481,7 +504,7 @@ class Its123 {
   bindInstrumentStorageListeners(accessCode) {
     const elements = this.api.elements.productElement.getElementsByTagName('input');
 
-    for (let e = 0; e < elements.length; e++) {
+    for (let e = 0; e < elements.length; e += 1) {
       const input = elements[e];
 
       if (input.type === 'radio') {
@@ -604,7 +627,7 @@ class Its123 {
    * @param  {String} metaHmac  HMAC for meta data
    * @return {Promise}
    */
-  requestReport(accessCode, { metaData = '', metaHmac = '' } = {}) {
+  async requestReport(accessCode, { metaData = '', metaHmac = '' } = {}) {
     let url;
     if (metaData.length <= 0 || metaHmac.length <= 0) {
       url = `${this.api.endpoint}/report/${accessCode}`;
@@ -612,14 +635,15 @@ class Its123 {
       url = `${this.api.endpoint}/report/${accessCode}?meta=${metaData}&meta_hmac=${metaHmac}`;
     }
 
-    return request(url, {
+    const response = await request(url, {
       headers: {
         'X-123test-ApiKey': this.api.apiKey,
       },
       method: 'GET',
       mode: 'cors',
-    })
-      .then((response) => response.text());
+    });
+
+    return await response.text();
   }
 
   /**
