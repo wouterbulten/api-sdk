@@ -4,7 +4,7 @@
   "scripts": {
     "build": "cross-env WEBPACK_OUTPUT=dist webpack --config webpack.config.js --progress --colors",
     "watch": "cross-env WEBPACK_OUTPUT=dev webpack --config webpack.config.js --progress --colors --watch",
-    "server": "browser-sync start --server 'build' --files 'build'"
+    "server": "webpack-dev-server --inline --content-base build/"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",

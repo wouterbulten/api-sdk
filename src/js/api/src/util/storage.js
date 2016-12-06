@@ -41,7 +41,7 @@ class ClientStorage {
    * @return {null|Object}
    */
   loadProduct(productId, user = '', expirationTime = 3600) {
-    const item = this.store.get(`its123Api-${productId}`);
+    const item = this.get(`its123Api-${productId}`);
 
     // Check presence of object
     if (!item) {

@@ -3,8 +3,8 @@ const path = require('path');
 
 const isDist = (process.env.WEBPACK_OUTPUT === 'dist');
 
-const outputDir = path.resolve(__dirname, (
-  (isDist) ? '../../../dist/js' : 'build'),
+const outputDir = path.resolve(__dirname,
+  (isDist) ? '../../../dist/js' : 'build'
 );
 
 module.exports = {
