@@ -27,16 +27,13 @@
  * SOFTWARE.
  */
 
+import 'regenerator-runtime/runtime';
+
 import request from '../util/request';
 
-import { tryAtMost, retryUntilResolved } from '../util/promise';
+import { tryAtMost } from '../util/promise';
 
-import {
-  saveToStorage,
-  getFromStorage,
-  removeFromStorage,
-  removeFromStorageByPrefix,
-} from '../util/storage';
+import ClientStorage from '../util/storage';
 
 /**
  * Default configuration for api, can be overriden by user
@@ -63,9 +60,11 @@ const defaultApiConfig = {
   },
 
   // Number of retries some fetch request may make
-  maxRetries: 2,
+  maxHttpRetries: 2,
   // Initial delay before a retry
   retryDelay: 5000,
+  // Number of times a user can try to resubmit a form
+  maxSubmitRetries: 10,
 
   apiKey: 'not-set',
 };
@@ -95,7 +94,7 @@ class Its123 {
     // Check for valid api key
     if (this.api.apiKey === 'not-set') {
       throw new Error(
-        'Api key must be set when initalising Its123 object. Please check your api config.'
+        'Api key must be set when initalising Its123 object. Please check your api config.',
       );
     }
 
@@ -106,16 +105,42 @@ class Its123 {
     if (!this.api.elements.loadingElement
       || !this.api.elements.productElement || !this.api.elements.reportElement) {
       throw new Error(
-        'Element for loading, product or report not found. Please check your HTML and Api config.'
+        'Element for loading, product or report not found. Please check your HTML and Api config.',
       );
     }
 
     // Placeholder for eventlisteners
     this.eventListeners = {};
+
+    // Create new storage object for localStorage functionality
+    this.store = new ClientStorage();
   }
 
   /**
-   * Load a product
+   * Wrapper around loadAndRunProduct with error handling
+   *
+   * @param  {String} productId product to load
+   * @param  {Object} [config={}] Product configuration, see loadAndRunProduct
+   * @return {Promise}
+   * @see loadAndRunProduct()
+   */
+  async loadProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
+    try {
+      return await this.loadAndRunProduct(productId, { renderReport, storage, user });
+    } catch (error) {
+      if (storage) {
+        // Something could be wrong with our local store,
+        // clear it to prevent any future errors
+        this.store.clearProduct(productId);
+      }
+      this.handleException(error);
+    }
+
+    return {};
+  }
+
+  /**
+   * Load and run a product
    *
    * Runs all the required sub steps from instrument to report. All promises are chained
    * and the final promise returns the product data when resolved.
@@ -142,9 +167,8 @@ class Its123 {
    * @param  {String}  [user=''] Optional user UUID
    * @return {Promise}
    */
-  loadProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
-    let product = {};
-    let promise;
+  async loadAndRunProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
+    let product = null;
 
     // Show loading div
     this.api.elements.productElement.style.display = 'none';
@@ -153,82 +177,64 @@ class Its123 {
     if (storage) {
       // Try to load product information from local storage, if it fails
       // fall back to a API request
-      promise = this.loadFromStorage(productId, user)
-        .catch(() => this.requestProduct(productId, user)
-          // Store the requested product in the local store for future requests
-          .then((p) => {
-            this.storeInStorage(productId, p, user);
-            return p;
-          })
-        );
+      product = this.store.loadProduct(productId, user);
+
+      if (!product) {
+        product = await this.requestProduct(productId, user);
+        // Store the requested product in the local store for future requests
+        this.store.saveProduct(productId, product, user);
+      }
     } else {
-      promise = this.requestProduct(productId, user);
+      product = this.requestProduct(productId, user);
     }
 
-    promise = promise.then((p) => {
-      product = p;
-      let instruments = product.slots.instruments;
-      this.triggerEvent('instruments-loaded', instruments);
+    let instruments = product.slots.instruments;
+    this.triggerEvent('instruments-loaded', instruments);
 
-      if (storage) {
-        // Filter any instruments that already have been completed
-        // Prevents unnecessary requests to the API
-        instruments = instruments.filter((i => {
-          const status = this.getInstrumentStatusFromStorage(i.access_code);
+    if (storage) {
+      // Filter any instruments that already have been completed
+      // Prevents unnecessary requests to the API
+      instruments = instruments.filter((i) => {
+        const status = this.store.loadInstrumentStatus(i.access_code);
 
-          switch (status) {
-            case 'ended-items':
-            case 'ended-skipped':
-            case 'ended-time':
-              this.triggerEvent('instrument-already-completed',
-                { accessCode: i.access_code, status });
-              return false;
-            case 'in-progress':
-              this.triggerEvent('instrument-continue',
-                { accessCode: i.access_code, status });
-              return true;
-            case 'started':
-            default:
-              return true;
-          }
-        }));
-      }
+        switch (status) {
+          case 'ended-items':
+          case 'ended-skipped':
+          case 'ended-time':
+            this.triggerEvent('instrument-already-completed',
+              { accessCode: i.access_code, status });
+            return false;
+          case 'in-progress':
+            this.triggerEvent('instrument-continue',
+              { accessCode: i.access_code, status });
+            return true;
+          case 'started':
+          default:
+            return true;
+        }
+      });
+    }
 
-      // Run all instruments in series
-      // 'reduce' is used as a special construct to map a list of instruments
-      // to a chain of promises that resolve in series. The chain is fired by
-      // setting a 'Promise.resolve()' as the initial value.
-      return instruments.reduce((previousStep, { access_code: accessCode }) => (
-        previousStep
-          .then(() => this.requestInstrument(accessCode))
-          .then((result) => {
-            this.triggerEvent('instrument-started', { accessCode, status: result.status });
-            return this.processApiInstrumentResponse(accessCode, result, storage);
-          })
-      ), Promise.resolve());
-    });
+    for (let i = 0; i < instruments.length; i += 1) {
+      const accessCode = instruments[i].access_code;
+
+      const result = await this.requestInstrument(accessCode);
+      this.triggerEvent('instrument-started', { accessCode, status: result.status });
+      await this.processApiInstrumentResponse(accessCode, result, storage);
+    }
+
 
     if (renderReport) {
       // All instruments have been completed, render report
-      promise = promise.then(() => this.loadReport(product.reports[0].access_code));
+      await this.loadReport(product.reports[0].access_code);
     }
 
-    // Return initial promise and make sure that returning the product is the last step in the chain
-    return promise
-      // Remove this session from the local storage
-      .then(() => this.clearStorage(productId))
-      // Trigger event and pass product info
-      .then(() => this.triggerEvent('product-completed', product))
-      .then(() => product)
-      // Also add a catch, this removes the need of having individual catches for every fetch
-      .catch((e) => {
-        if (storage) {
-          // Something could be wrong with our local store,
-          // clear it to prevent any future errors
-          this.clearStorage(productId);
-        }
-        return this.handleException(e);
-      });
+    // Remove this session from the local storage
+    this.store.clearProduct(productId);
+    // Trigger event and pass product info
+    this.triggerEvent('product-completed', product);
+
+    return product;
   }
 
   /**
@@ -239,10 +245,11 @@ class Its123 {
    * @param  {String} metaHmac  HMAC for meta data
    * @return {Promise}
    */
-  loadReport(accessCode, { metaData, metaHmac } = {}) {
-    return this.requestReport(accessCode, { metaData, metaHmac })
-      .then((body) => this.renderReport(body))
-      .then(() => this.triggerEvent('report-ready'));
+  async loadReport(accessCode, { metaData, metaHmac } = {}) {
+    const body = await this.requestReport(accessCode, { metaData, metaHmac });
+
+    this.renderReport(body);
+    this.triggerEvent('report-ready');
   }
 
   /**
@@ -258,46 +265,56 @@ class Its123 {
    * @param  {Boolean} storage   Whether to load instrument input data from local storage
    * @return {Promise}
    */
-  processApiInstrumentResponse(accessCode, { status, resources, body }, storage) {
-    let promise;
-
+  async processApiInstrumentResponse(accessCode, { status, resources, body }, storage) {
     switch (status) {
       case 'started':
-      case 'in-progress':
-        this.updateInstrumentInStorage(accessCode, status);
+      case 'in-progress': // eslint-disable-line no-case-declarations
+        this.store.saveInstrumentStatus(accessCode, status);
 
-        promise = this.loadResources(resources)
-          .then(() => this.renderInstrument(body));
+        // Wait for resources to load
+        await Its123.loadResources(resources);
+
+        this.renderInstrument(body);
 
         // Try to load item data from local storage when enabled
         if (storage) {
-          promise = promise.then(() => this.loadInstrumentStateFromStorage(accessCode))
-          .then(() => this.bindInstrumentStorageListeners(accessCode));
+          this.loadInstrumentStateFromStorage(accessCode);
+          this.bindInstrumentStorageListeners(accessCode);
         }
 
-        return promise.then(() => this.runResourceFunctions(resources))
-          .then(() => retryUntilResolved(() => this.waitForInstrumentToSubmit()
-            .then(({ form }) =>
-              tryAtMost(this.api.maxRetries, this.api.retryDelay, () =>
-                this.submitInstrumentData(accessCode, form))
-              )
-              .catch((error) => {
-                this.triggerEvent('instrument-submit-failed', null, 'error');
-                throw error; // Re-trow error to bubble up
-              })
-            )
-          )
-          // Run function again until instrument has ended
-          .then((result) => this.processApiInstrumentResponse(accessCode, result));
+        this.runResourceFunctions(resources);
+
+        let lastError = null;
+        for (let i = 0; i < this.api.maxSubmitRetries; i += 1) {
+          const { form } = await this.waitForInstrumentToSubmit();
+
+          try {
+            const result = await tryAtMost(this.api.maxHttpRetries, this.api.retryDelay, () =>
+              this.submitInstrumentData(accessCode, form),
+            );
+            // Run function again until instrument has ended
+            return await this.processApiInstrumentResponse(accessCode, result);
+          } catch (error) {
+            this.triggerEvent('instrument-submit-failed', null, 'error');
+
+            // Save error for later, we first let the user retry
+            lastError = error;
+          }
+        }
+        // Failed after max attempts, throw last error
+        throw lastError;
+
       case 'ended-items':
       case 'ended-skipped':
       case 'ended-time':
-        this.updateInstrumentInStorage(accessCode, status);
+        this.store.saveInstrumentStatus(accessCode, status);
         this.triggerEvent('instrument-completed', { accessCode, status });
-        return Promise.resolve();
+        break;
       default:
         throw new Error(`Unexpected instrument status ${status}`);
     }
+
+    return {};
   }
 
   /**
@@ -308,7 +325,7 @@ class Its123 {
    * @param  {String} user UUID v4
    * @return {Promise}
    */
-  requestProduct(productId, user) {
+  async requestProduct(productId, user) {
     const headers = {
       'Content-Type': 'application/json',
       'X-123test-ApiKey': this.api.apiKey,
@@ -319,18 +336,20 @@ class Its123 {
       headers['X-123test-Respondent'] = user;
     }
 
-    return request(`${this.api.endpoint}/product/request-product`, {
-      method: 'GET',
-      mode: 'cors',
-      headers,
-    })
-    .then((response) => response.json())
-    .then((json) => ({
-      slots: json.slots,
-      reports: json.reports,
-      product_access_code: json.product_access_code,
-    }))
-    .catch(error => {
+    try {
+      const response = await request(`${this.api.endpoint}/product/request-product`, {
+        method: 'GET',
+        mode: 'cors',
+        headers,
+      });
+
+      const json = await response.json();
+      return {
+        slots: json.slots,
+        reports: json.reports,
+        product_access_code: json.product_access_code,
+      };
+    } catch (error) {
       switch (error.status) {
         case 401:
           this.triggerEvent('invalid-api-key', error.response, 'error');
@@ -342,8 +361,8 @@ class Its123 {
           // Do nothing
       }
 
-      throw error;
-    });
+      throw Error;
+    }
   }
 
   /**
@@ -351,23 +370,25 @@ class Its123 {
    * @param  {String} accessCode Access code for product run
    * @return {Promise}
    */
-  requestProductInfo(accessCode) {
+  async requestProductInfo(accessCode) {
     const headers = {
       'Content-Type': 'application/json',
       'X-123test-ApiKey': this.api.apiKey,
     };
 
-    return request(`${this.api.endpoint}/product/${accessCode}/overview`, {
+    const response = await request(`${this.api.endpoint}/product/${accessCode}/overview`, {
       method: 'GET',
       mode: 'cors',
       headers,
-    })
-    .then((response) => response.json())
-    .then((json) => ({
+    });
+
+    const json = await response.json();
+
+    return {
       slots: json.slots,
       reports: json.reports,
       product_access_code: json.product_access_code,
-    }));
+    };
   }
 
   /**
@@ -377,24 +398,22 @@ class Its123 {
    * @param  {String} accessCode Access code for the instrument
    * @return {Promise}
    */
-  requestInstrument(accessCode) {
-    return request(`${this.api.endpoint}/instrument/next-items`, {
+  async requestInstrument(accessCode) {
+    const response = await request(`${this.api.endpoint}/instrument/next-items`, {
       method: 'GET',
       cache: 'no-cache',
       headers: {
         'X-123test-ApiKey': this.api.apiKey,
         'X-123test-InstrumentRun': accessCode,
       },
-    })
-    // reponse.text() returns a Promise so we add an extra closure here
-    // to also access the resource variable itself
-    .then((response) => response.text()
-      .then((body) => ({
-        body,
-        status: response.headers.get('X-123test-InstrumentStatus'),
-        resources: JSON.parse(response.headers.get('X-123test-Resources')),
-      }))
-    );
+    });
+
+    const body = await response.text();
+    return {
+      body,
+      status: response.headers.get('X-123test-InstrumentStatus'),
+      resources: JSON.parse(response.headers.get('X-123test-Resources')),
+    };
   }
 
   /**
@@ -426,7 +445,9 @@ class Its123 {
         button.disabled = true;
         button.classList.add(className);
         // Save content to an attribute to reset it later
-        button.setAttribute('data-label', button.innerText);
+        if (!button.getAttribute('data-label')) {
+          button.setAttribute('data-label', button.innerText);
+        }
         button.innerHTML = loadingIcon;
 
         resolve({ form, event });
@@ -440,10 +461,10 @@ class Its123 {
    * @param  {Object} form       HTML Form
    * @return {Promise}
    */
-  submitInstrumentData(accessCode, form) {
+  async submitInstrumentData(accessCode, form) {
     this.triggerEvent('instrument-submitting', accessCode);
 
-    return request(`${this.api.endpoint}/instrument/next-items`, {
+    const response = await request(`${this.api.endpoint}/instrument/next-items`, {
       method: 'POST',
       cache: 'no-cache',
       body: new FormData(form),
@@ -451,14 +472,15 @@ class Its123 {
         'X-123test-ApiKey': this.api.apiKey,
         'X-123test-InstrumentRun': accessCode,
       },
-    })
-    .then((response) => response.text()
-      .then((body) => ({
-        body,
-        status: response.headers.get('X-123test-InstrumentStatus'),
-        resources: JSON.parse(response.headers.get('X-123test-Resources')),
-      }))
-    );
+    });
+
+    const body = await response.text();
+
+    return {
+      body,
+      status: response.headers.get('X-123test-InstrumentStatus'),
+      resources: JSON.parse(response.headers.get('X-123test-Resources')),
+    };
   }
 
   /**
@@ -480,12 +502,12 @@ class Its123 {
   bindInstrumentStorageListeners(accessCode) {
     const elements = this.api.elements.productElement.getElementsByTagName('input');
 
-    for (let e = 0; e < elements.length; e++) {
+    for (let e = 0; e < elements.length; e += 1) {
       const input = elements[e];
 
       if (input.type === 'radio') {
         input.addEventListener('change', () => {
-          saveToStorage(`${accessCode}-${input.name}`, input.value);
+          this.store.set(`${accessCode}-${input.name}`, input.value);
         });
       }
     }
@@ -500,9 +522,9 @@ class Its123 {
     const elements = this.api.elements.productElement.getElementsByTagName('input');
 
     let loaded = false;
-    for (let e = 0; e < elements.length; e++) {
+    for (let e = 0; e < elements.length; e += 1) {
       const input = elements[e];
-      const value = getFromStorage(`${accessCode}-${input.name}`);
+      const value = this.store.get(`${accessCode}-${input.name}`);
 
       if (value !== null && input.type === 'radio' && input.value === value) {
         input.checked = true;
@@ -535,10 +557,10 @@ class Its123 {
    * @param  {Object} resources The resources to load
    * @return {void}
    */
-  loadResources(resources) {
+  static loadResources(resources) {
     // Map each resource to a new Promise
     // JS resources resolve when loaded
-    return Promise.all(Object.keys(resources).map((key) => (
+    return Promise.all(Object.keys(resources).map(key => (
       new Promise((resolve, reject) => {
         const resourceItem = resources[key];
         const head = document.getElementsByTagName('head')[0];
@@ -603,7 +625,7 @@ class Its123 {
    * @param  {String} metaHmac  HMAC for meta data
    * @return {Promise}
    */
-  requestReport(accessCode, { metaData = '', metaHmac = '' } = {}) {
+  async requestReport(accessCode, { metaData = '', metaHmac = '' } = {}) {
     let url;
     if (metaData.length <= 0 || metaHmac.length <= 0) {
       url = `${this.api.endpoint}/report/${accessCode}`;
@@ -611,100 +633,15 @@ class Its123 {
       url = `${this.api.endpoint}/report/${accessCode}?meta=${metaData}&meta_hmac=${metaHmac}`;
     }
 
-    return request(url, {
+    const response = await request(url, {
       headers: {
         'X-123test-ApiKey': this.api.apiKey,
       },
       method: 'GET',
       mode: 'cors',
-    })
-      .then((response) => response.text());
-  }
-
-  /**
-   * Store a product in the local storage
-   * @param  {String} productId Id of the product
-   * @param  {object} product   Product information
-   * @param  {String} user      User UUID
-   * @return {void}
-   */
-  storeInStorage(productId, product, user) {
-    // Add new record
-    const productData = {
-      ...product,
-      user,
-      started: Date.now(),
-    };
-
-    saveToStorage(`its123Api-${productId}`, JSON.stringify(productData));
-  }
-
-  /**
-   * Load a product from the storage
-   *
-   * Returns a promise that resolves when a local storage item has been found.
-   * @param  {String} productId             Product id
-   * @param  {String} [user='']             User UUID
-   * @param  {Number} [expirationTime=3600] Max lifetime of storage entry in seconds
-   * @return {Promise}
-   */
-  loadFromStorage(productId, user = '', expirationTime = 3600) {
-    return new Promise((resolve, reject) => {
-      const item = getFromStorage(`its123Api-${productId}`);
-
-      // Check browser support and presence of object
-      if (!item) {
-        reject('No storage present');
-      }
-
-      const product = JSON.parse(item);
-
-      if (product && (product.started + (expirationTime * 1000)) > Date.now()
-        && product.user === user) {
-        console.info('Loading instrument from local storage.');
-        resolve(product);
-      }
-
-      reject('No product in local store');
     });
-  }
 
-  /**
-   * Clear the local storage of all items associatd with a product id
-   * @return {void}
-   */
-  clearStorage(productId) {
-    const productJson = getFromStorage(`its123Api-${productId}`);
-
-    if (!productJson) {
-      return;
-    }
-
-    const product = JSON.parse(productJson);
-    product.slots.instruments.forEach(i => {
-      removeFromStorage(`its123Api-${i.access_code}`);
-      removeFromStorageByPrefix(i.access_code);
-    });
-    removeFromStorage(`its123Api-${productId}`);
-  }
-
-  /**
-   * Set the current state of an instrument in storage
-   * @param  {String} accessCode Access code for instrument
-   * @param  {String} status     Status indicator
-   * @return {void}
-   */
-  updateInstrumentInStorage(accessCode, status) {
-    saveToStorage(`its123Api-${accessCode}`, status);
-  }
-
-  /**
-   * Get status of an instrument from storage
-   * @param  {String} accessCode Access code for instrument
-   * @return {String|null} Status
-   */
-  getInstrumentStatusFromStorage(accessCode) {
-    return getFromStorage(`its123Api-${accessCode}`);
+    return await response.text();
   }
 
   /**
@@ -748,7 +685,7 @@ class Its123 {
   getPdfUrl(product, typeName = 'standard') {
     // Get correct type id for premium or standard pdf
     const type = (typeName === 'premium') ? 221 : 121;
-    const report = product.reports.find((r) => r.type === type);
+    const report = product.reports.find(r => r.type === type);
 
     if (!report) {
       throw new Error('No access code for pdf is present in product object.');
@@ -768,7 +705,7 @@ class Its123 {
     const listeners = this.eventListeners[eventName];
 
     if (listeners && listeners.length > 0) {
-      listeners.forEach((l) => l(data));
+      listeners.forEach(l => l(data));
     }
 
     if (this.api.environment === 'development') {
@@ -798,7 +735,7 @@ class Its123 {
       events.push(eventName);
     }
 
-    events.forEach(event => {
+    events.forEach((event) => {
       if (!this.eventListeners[event]) {
         this.eventListeners[event] = [];
       }
