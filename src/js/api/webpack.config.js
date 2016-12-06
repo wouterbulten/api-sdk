@@ -47,6 +47,11 @@ module.exports = {
   },
 
   plugins: (isDist) ? [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     // Optimize the output bundle by minifying
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -54,19 +59,12 @@ module.exports = {
       },
       comments: false,
       sourceMap: true,
-      mangle: {
-        // Var names that should not change
-        except: [],
-      },
+      mangle: true,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Remove any duplicate code
     new webpack.optimize.DedupePlugin(),
 
-    new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('production')
-        }
-    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
   ] : [],
 };

@@ -31,14 +31,9 @@ import 'regenerator-runtime/runtime';
 
 import request from '../util/request';
 
-import { tryAtMost, retryUntilResolved } from '../util/promise';
+import { tryAtMost } from '../util/promise';
 
-import {
-  saveToStorage,
-  getFromStorage,
-  removeFromStorage,
-  removeFromStorageByPrefix,
-} from '../util/storage';
+import ClientStorage from '../util/storage';
 
 /**
  * Default configuration for api, can be overriden by user
@@ -116,6 +111,9 @@ class Its123 {
 
     // Placeholder for eventlisteners
     this.eventListeners = {};
+
+    // Create new storage object for localStorage functionality
+    this.store = new ClientStorage();
   }
 
   /**
@@ -133,7 +131,7 @@ class Its123 {
       if (storage) {
         // Something could be wrong with our local store,
         // clear it to prevent any future errors
-        this.clearStorage(productId);
+        this.store.clearProduct(productId);
       }
       this.handleException(error);
     }
@@ -179,12 +177,12 @@ class Its123 {
     if (storage) {
       // Try to load product information from local storage, if it fails
       // fall back to a API request
-      try {
-        product = await this.loadFromStorage(productId, user);
-      } catch (error) {
+      product = this.store.loadProduct(productId, user);
+
+      if (!product) {
         product = await this.requestProduct(productId, user);
         // Store the requested product in the local store for future requests
-        this.storeInStorage(productId, product, user);
+        this.store.saveProduct(productId, product, user);
       }
     } else {
       product = this.requestProduct(productId, user);
@@ -197,7 +195,7 @@ class Its123 {
       // Filter any instruments that already have been completed
       // Prevents unnecessary requests to the API
       instruments = instruments.filter((i) => {
-        const status = this.getInstrumentStatusFromStorage(i.access_code);
+        const status = this.store.loadInstrumentStatus(i.access_code);
 
         switch (status) {
           case 'ended-items':
@@ -232,7 +230,7 @@ class Its123 {
     }
 
     // Remove this session from the local storage
-    this.clearStorage(productId);
+    this.store.clearProduct(productId);
     // Trigger event and pass product info
     this.triggerEvent('product-completed', product);
 
@@ -271,7 +269,7 @@ class Its123 {
     switch (status) {
       case 'started':
       case 'in-progress': // eslint-disable-line no-case-declarations
-        this.updateInstrumentInStorage(accessCode, status);
+        this.store.saveInstrumentStatus(accessCode, status);
 
         // Wait for resources to load
         await Its123.loadResources(resources);
@@ -309,7 +307,7 @@ class Its123 {
       case 'ended-items':
       case 'ended-skipped':
       case 'ended-time':
-        this.updateInstrumentInStorage(accessCode, status);
+        this.store.saveInstrumentStatus(accessCode, status);
         this.triggerEvent('instrument-completed', { accessCode, status });
         break;
       default:
@@ -509,7 +507,7 @@ class Its123 {
 
       if (input.type === 'radio') {
         input.addEventListener('change', () => {
-          saveToStorage(`${accessCode}-${input.name}`, input.value);
+          this.store.set(`${accessCode}-${input.name}`, input.value);
         });
       }
     }
@@ -526,7 +524,7 @@ class Its123 {
     let loaded = false;
     for (let e = 0; e < elements.length; e += 1) {
       const input = elements[e];
-      const value = getFromStorage(`${accessCode}-${input.name}`);
+      const value = this.store.get(`${accessCode}-${input.name}`);
 
       if (value !== null && input.type === 'radio' && input.value === value) {
         input.checked = true;
@@ -647,92 +645,6 @@ class Its123 {
   }
 
   /**
-   * Store a product in the local storage
-   * @param  {String} productId Id of the product
-   * @param  {object} product   Product information
-   * @param  {String} user      User UUID
-   * @return {void}
-   */
-  storeInStorage(productId, product, user) {
-    // Add new record
-    const productData = {
-      ...product,
-      user,
-      started: Date.now(),
-    };
-
-    saveToStorage(`its123Api-${productId}`, JSON.stringify(productData));
-  }
-
-  /**
-   * Load a product from the storage
-   *
-   * Returns a promise that resolves when a local storage item has been found.
-   * @param  {String} productId             Product id
-   * @param  {String} [user='']             User UUID
-   * @param  {Number} [expirationTime=3600] Max lifetime of storage entry in seconds
-   * @return {Promise}
-   */
-  loadFromStorage(productId, user = '', expirationTime = 3600) {
-    return new Promise((resolve, reject) => {
-      const item = getFromStorage(`its123Api-${productId}`);
-
-      // Check browser support and presence of object
-      if (!item) {
-        reject('No storage present');
-      }
-
-      const product = JSON.parse(item);
-
-      if (product && (product.started + (expirationTime * 1000)) > Date.now()
-        && product.user === user) {
-        console.info('Loading instrument from local storage.');
-        resolve(product);
-      }
-
-      reject('No product in local store');
-    });
-  }
-
-  /**
-   * Clear the local storage of all items associatd with a product id
-   * @return {void}
-   */
-  clearStorage(productId) {
-    const productJson = getFromStorage(`its123Api-${productId}`);
-
-    if (!productJson) {
-      return;
-    }
-
-    const product = JSON.parse(productJson);
-    product.slots.instruments.forEach(i => {
-      removeFromStorage(`its123Api-${i.access_code}`);
-      removeFromStorageByPrefix(i.access_code);
-    });
-    removeFromStorage(`its123Api-${productId}`);
-  }
-
-  /**
-   * Set the current state of an instrument in storage
-   * @param  {String} accessCode Access code for instrument
-   * @param  {String} status     Status indicator
-   * @return {void}
-   */
-  updateInstrumentInStorage(accessCode, status) {
-    saveToStorage(`its123Api-${accessCode}`, status);
-  }
-
-  /**
-   * Get status of an instrument from storage
-   * @param  {String} accessCode Access code for instrument
-   * @return {String|null} Status
-   */
-  getInstrumentStatusFromStorage(accessCode) {
-    return getFromStorage(`its123Api-${accessCode}`);
-  }
-
-  /**
    * Log an exception and retrow
    * @param  {Object} e The error
    * @return null
@@ -773,7 +685,7 @@ class Its123 {
   getPdfUrl(product, typeName = 'standard') {
     // Get correct type id for premium or standard pdf
     const type = (typeName === 'premium') ? 221 : 121;
-    const report = product.reports.find((r) => r.type === type);
+    const report = product.reports.find(r => r.type === type);
 
     if (!report) {
       throw new Error('No access code for pdf is present in product object.');
@@ -793,7 +705,7 @@ class Its123 {
     const listeners = this.eventListeners[eventName];
 
     if (listeners && listeners.length > 0) {
-      listeners.forEach((l) => l(data));
+      listeners.forEach(l => l(data));
     }
 
     if (this.api.environment === 'development') {
