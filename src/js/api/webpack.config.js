@@ -4,7 +4,7 @@ const path = require('path');
 const isDist = (process.env.WEBPACK_OUTPUT === 'dist');
 
 const outputDir = path.resolve(__dirname,
-  (isDist) ? '../../../dist/js' : 'build'
+  ((isDist) ? '../../../dist/js' : 'build') // eslint-disable-line comma-dangle
 );
 
 module.exports = {
