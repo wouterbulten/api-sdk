@@ -1,3 +1,9 @@
+/**
+ * Utility wrapper around localStorage.
+ *
+ * Adds convenience functions to save and retrieve items
+ * from the local storage store.
+ */
 class ClientStorage {
 
   constructor() {

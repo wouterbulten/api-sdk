@@ -22,7 +22,7 @@ export function timeoutPromise(ms, promise) {
       (err) => {
         clearTimeout(timeoutId);
         reject(err);
-      }
+      },
     );
   });
 }
@@ -39,22 +39,22 @@ export function timeoutPromise(ms, promise) {
 export function tryAtMost(maxRetries, timeout, fn, timeoutFactor = 4, current = 0) {
   return new Promise((resolve, reject) => fn()
     .then(resolve)
-    .catch(error => {
+    .catch((error) => {
       if (current < maxRetries) {
         setTimeout(() =>
           resolve(tryAtMost(maxRetries, timeout * timeoutFactor, fn, timeoutFactor, current + 1)),
-          timeout
+          timeout,
         );
       } else {
         reject(error);
       }
-    })
+    }),
   );
 }
 
 export function retryUntilResolved(fn) {
-  return new Promise((resolve) => fn()
+  return new Promise(resolve => fn()
     .then(resolve)
-    .catch(() => resolve(retryUntilResolved(fn)))
+    .catch(() => resolve(retryUntilResolved(fn))),
   );
 }
