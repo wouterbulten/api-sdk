@@ -1,10 +1,10 @@
-const webpack = require('webpack');
+const webpack = require('webpack'); // eslint-disable-line import/no-extraneous-dependencies
 const path = require('path');
 
 const isDist = (process.env.WEBPACK_OUTPUT === 'dist');
 
 const outputDir = path.resolve(__dirname, (
-  (isDist) ? '../../../dist/js' : 'build')
+  (isDist) ? '../../../dist/js' : 'build'),
 );
 
 module.exports = {
@@ -49,8 +49,8 @@ module.exports = {
   plugins: (isDist) ? [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
+        NODE_ENV: JSON.stringify('production'),
+      },
     }),
     // Optimize the output bundle by minifying
     new webpack.optimize.UglifyJsPlugin({
