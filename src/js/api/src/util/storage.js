@@ -135,7 +135,7 @@ class ClientStorage {
   }
 
   /**
-   * Clear the local storage of all items associatd with a product id
+   * Clear the local storage of all items associated with a product id
    * @return {void}
    */
   clearProduct(productId) {

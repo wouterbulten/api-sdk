@@ -140,6 +140,19 @@ class Its123 {
   }
 
   /**
+   * Restarts a product by clearing any local data
+   *
+   * @param  {String} productId product to load
+   * @param  {Object} [config={}] Product configuration, see loadAndRunProduct
+   * @return {Promise}
+   * @see loadAndRunProduct()
+   */
+  restartProduct(productId, { renderReport = true, storage = true, user = '' } = {}) {
+    this.store.clearProduct(productId);
+    return this.loadProduct(productId, { renderReport, storage, user });
+  }
+
+  /**
    * Load and run a product
    *
    * Runs all the required sub steps from instrument to report. All promises are chained
